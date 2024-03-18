@@ -10,8 +10,9 @@ import {
   
 const Profile = () => {
   return (
+    <div >
     <DropdownMenu>
-  <DropdownMenuTrigger><AvatarIcon className="w-[1.2rem] h-[1.2rem]"/></DropdownMenuTrigger>
+  <DropdownMenuTrigger className="cursor-pointer hover:bg-background w-12 h-12 lg:flex justify-center items-center rounded-full hidden" ><AvatarIcon className="w-6 h-6"/></DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
@@ -21,7 +22,7 @@ const Profile = () => {
     <DropdownMenuItem>Subscription</DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
-
+</div>
   )
 }
 

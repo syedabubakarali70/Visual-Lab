@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/theme-mode-toggle-button";
-import { AvatarIcon } from "@radix-ui/react-icons";
 import Profile from "@/components/Profile";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,13 +28,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <nav className="w-full p-4 flex justify-between items-center">
-            <div className="logo  p-2 text-2xl">Visual Lab</div>
-            <div className=" w-2/3 flex opacity-55 justify-start gap-2 p-2 text-lg">
+          <nav className="w-full bg-secondary text-secondary-foreground h-16 flex items-center justify-between p-2">
+            <div className="cursor-pointer hover:bg-background w-12 h-12 flex justify-center items-center rounded-full">{<HamburgerMenuIcon width="24" height="24"/>}</div>
+            <div className="text-xl font-normal">Visual Lab</div>
+            <div className=" w-2/3 hidden  opacity-55 justify-start gap-2 p-2 text-lg">
               <a href="">DSA</a>
               <a href="">TextEditor</a>
             </div>
-            <div className="flex  justify-between items-center w-20">
+            <div className="flex  justify-between items-center">
               <ModeToggle />
               <Profile/>
             </div>
