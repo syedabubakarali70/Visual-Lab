@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/theme-mode-toggle-button";
 import Profile from "@/components/Profile";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import NavigationDrawer from "@/components/NavigationDrawer";
 import '@radix-ui/themes/styles.css';
 import { Theme, ThemePanel } from '@radix-ui/themes';
@@ -31,7 +30,7 @@ export default function RootLayout({
         >
           <Theme>
           <nav className="w-full bg-background text-secondary-foreground h-16 flex items-center justify-between p-2">
-            <div className="cursor-pointer hover:bg-background w-12 h-12 flex justify-center items-center rounded-full">{<HamburgerMenuIcon width="24" height="24"/>}</div>
+            <NavigationDrawer/>
             <div className="text-xl font-normal">Visual Lab</div>
             <div className=" w-2/3 hidden  opacity-55 justify-start gap-2 p-2 text-lg">
               <a href="">DSA</a>
@@ -42,9 +41,8 @@ export default function RootLayout({
               <Profile/>
             </div>
           </nav>
-          <NavigationDrawer/>
           {children}
-          <ThemePanel />
+          {/* <ThemePanel /> */}
           </Theme>
         </ThemeProvider>
       </body>
