@@ -17,7 +17,7 @@ const NavigationDrawer = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = ()=> setOpen(!open)
   return (
-    <Drawer direction="top" open={open} onDrag={handleOpen} onRelease={handleOpen}>
+    <Drawer direction="top" open={open}  onRelease={handleOpen}>
       <DrawerTrigger className="cursor-pointer hover:bg-background w-12 h-12 flex justify-center items-center rounded-full">
           <HamburgerMenuIcon width="24" height="24" onClick={handleOpen}/>
       </DrawerTrigger>
