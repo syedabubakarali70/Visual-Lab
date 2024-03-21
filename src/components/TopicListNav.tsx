@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { SortingAlgoList, DataStructureList } from "@/lib/TopicLists";
 import {
   Drawer,
@@ -15,25 +16,28 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 const TopicListNav = () => {
+  const [isListOpen, setisListOpen] = useState(false);
+  const handleIsListOpen = () => setisListOpen(!isListOpen);
   return (
     <nav>
-      <Drawer direction="left">
-        <DrawerTrigger>
-          <div className="w-full text-md py-2">
-            <Button variant="outline">
-              <ArrowRightIcon />
-            </Button>
-          </div>
+      <Drawer direction="left" open={isListOpen} onRelease={handleIsListOpen}>
+        <DrawerTrigger className="w-full text-md py-2">
+          <ArrowRightIcon width="24" height="24" onClick={handleIsListOpen} />
         </DrawerTrigger>
-        <DrawerContent className="-top-[13%] left-0 h-min-screen w-[350px]">
+        <DrawerContent className="-top-[13%] left-0 h-min-screen w-[350px] mx-4">
           <DrawerHeader>
             <DrawerTitle>Visual Lab</DrawerTitle>
           </DrawerHeader>
           {SortingAlgoList.map((algo, index) => (
-            <Link href={algo.link} key={index} > {algo.name}</Link>
+            <Link href={algo.link} key={index} onClick={handleIsListOpen}>
+              {" "}
+              {algo.name}
+            </Link>
           ))}
           {DataStructureList.map((algo, index) => (
-            <Link href={algo.link} key={index}  >{algo.name}</Link>
+            <Link href={algo.link} key={index} onClick={handleIsListOpen}>
+              {algo.name}
+            </Link>
           ))}
           <DrawerFooter></DrawerFooter>
         </DrawerContent>
