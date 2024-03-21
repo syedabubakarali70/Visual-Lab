@@ -4,13 +4,13 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const TopicCard = ({ info }: { info: { name: string; link: string } }) => {
   return (
-    <Link href={`dsa/${info.link}`} className="w-5/12 ">
-      <Card>
+    <Card className=" block w-full md:w-[45%]">
+        <Link href={`dsa/${info.link}`} >
         <CardHeader>
-          <CardTitle>{info.name}</CardTitle>
+          <CardTitle className="text-center">{info.name}</CardTitle>
         </CardHeader>
-      </Card>
     </Link>
+      </Card>
   );
 };
 

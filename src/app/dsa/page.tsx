@@ -1,63 +1,27 @@
-import TopicCard from '@/components/TopicCard'
-
-const links =[
-  {
-    name:"Bubble Sort",
-    link:"bubblesort",
-  },
-  {
-    name:"Merge Sort",
-    link:"mergesort",
-  },
-  {
-    name:"Quick Sort",
-    link:"quicksort",
-  },
-  {
-    name:"Insertion Sort",
-    link:"insertionsort",
-  },
-  {
-    name:"Counting Sort",
-    link:"countingsort",
-  },
-  {
-    name:"Selection Sort",
-    link:"selectionsort",
-  },
-  {
-    name:"Arays",
-    link:"arrays",
-  },
-  {
-    name:"Stack",
-    link:"stack",
-  },
-  {
-    name:"Queue",
-    link:"queue",
-  },
-  {
-    name:"Linked List",
-    link:"linkedlist",
-  },
-  {
-    name:"Tree",
-    link:"Trees",
-  },
-  
-]
+import TopicCard from "@/components/TopicCard";
+import { SortingAlgoList, DataStructureList } from "@/lib/TopicLists";
 
 const DSA = () => {
   return (
-    <section className='flex border-2 m-2 p-2 flex-wrap gap-2 justify-around'>
-      {links.map((link,index)=>(
-        <TopicCard info={link} key={index}/>
+    <>
+      <section className="w-full px-3 my-4">
+        <div className="text-center text-2xl my-4">Sorting Algorithms</div>
+        <div className="gap-y-2 flex flex-col md:flex-row wrap">
+        {SortingAlgoList.map((algo, index) => (
+          <TopicCard info={algo} key={index} />
+        ))}
+        </div>
+      </section>
+      <section className="w-full px-3 mb-4">
+        <div className="text-center text-2xl mb-4">Sorting Algorithms</div>
+        <div className="gap-y-2 flex flex-col md:flex-row">
+        {DataStructureList.map((algo, index) => (
+          <TopicCard info={algo} key={index} />
+        ))}
+        </div>
+      </section>
+      </>
+  );
+};
 
-      ))}
-      
-    </section>
-  )
-}
-
-export default DSA
+export default DSA;
