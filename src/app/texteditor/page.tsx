@@ -7,7 +7,7 @@ import Editor from '@monaco-editor/react';
   const TextEditor=()=> {
   const editorRef = useRef(null);
 
-  function handleEditorDidMount(editor, monaco) {
+  function handleEditorDidMount(editor:{editor:React.Component}, monaco) {
     editorRef.current = editor;
   }
 
@@ -29,7 +29,7 @@ import Editor from '@monaco-editor/react';
         theme='vs-dark'
         className='mx-auto'
         options={{
-          lineHeight:60
+          lineHeight:25
         }}
         />
         </div>
