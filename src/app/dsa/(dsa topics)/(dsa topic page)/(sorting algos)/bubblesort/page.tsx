@@ -1,6 +1,6 @@
 import React from "react";
 import { TypographyH1 } from "@/components/TypographyH1";
-import { TypographyP } from "@/components/Typographyp";
+import { TypographyP } from "@/components/TypographyP";
 
 const BubbleSort = () => {
   return (
