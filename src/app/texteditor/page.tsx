@@ -1,15 +1,15 @@
-"use client"
-import React, { useRef } from 'react';
-import ReactDOM from 'react-dom';
+"use client";
+import React, { useRef } from "react";
+import ReactDOM from "react-dom";
 
-import Editor from '@monaco-editor/react';
+import Editor from "@monaco-editor/react";
 
-  const TextEditor=()=> {
+const TextEditor = () => {
   const editorRef = useRef(null);
 
-  function handleEditorDidMount(editor:{editor:React.Component}, monaco) {
-    editorRef.current = editor;
-  }
+  // function handleEditorDidMount(editor, monaco) {
+  //   editorRef.current = editor;
+  // }
 
   function showValue() {
     alert(editorRef.current.getValue());
@@ -19,22 +19,21 @@ import Editor from '@monaco-editor/react';
     <>
       <button onClick={showValue}>Show value</button>
       <div className="w-full">
-
-      <Editor
-        height="90vh"
-        width="80vw"
-        defaultLanguage="javascript"
-        defaultValue="// some comment"
-        onMount={handleEditorDidMount}
-        theme='vs-dark'
-        className='mx-auto'
-        options={{
-          lineHeight:25
-        }}
+        <Editor
+          height="90vh"
+          width="80vw"
+          defaultLanguage="javascript"
+          defaultValue="// some comment"
+          // onMount={handleEditorDidMount}
+          theme="vs-dark"
+          className="mx-auto"
+          options={{
+            lineHeight: 25,
+          }}
         />
-        </div>
+      </div>
     </>
   );
-}
+};
 
 export default TextEditor;
