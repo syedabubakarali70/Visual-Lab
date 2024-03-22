@@ -6,9 +6,12 @@ const DSATopicPageLayout = ({children}: Readonly<{
   }>) => {
 
   return (
-    <section className='px-4'>
+    <section className='px-4 flex flex-col'>
         <TopicListNav/>
+        <div className='w-full'>
+
         {children}
+        </div>
     </section>
   )
 }

@@ -28,8 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Theme>
-          <nav className="w-full bg-background text-secondary-foreground h-16 flex items-center justify-between p-2">
+          <nav className="w-full bg-background text-foreground h-16 flex items-center justify-between p-2">
             <NavigationDrawer/>
             <div className="text-xl font-normal">Visual Lab</div>
             <div className=" w-2/3 hidden  opacity-55 justify-start gap-2 p-2 text-lg">
@@ -42,8 +41,6 @@ export default function RootLayout({
             </div>
           </nav>
           {children}
-          {/* <ThemePanel /> */}
-          </Theme>
         </ThemeProvider>
       </body>
     </html>
