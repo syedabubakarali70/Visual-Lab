@@ -11,13 +11,13 @@ const TextEditor = () => {
   //   editorRef.current = editor;
   // }
 
-  function showValue() {
-    alert(editorRef.current.getValue());
-  }
+  // function showValue() {
+  //   alert(editorRef.current?.getValue());
+  // }
 
   return (
     <>
-      <button onClick={showValue}>Show value</button>
+      {/* <button onClick={showValue}>Show value</button> */}
       <div className="w-full">
         <Editor
           height="90vh"
