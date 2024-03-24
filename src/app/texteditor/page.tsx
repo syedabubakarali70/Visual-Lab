@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import ReactDOM from "react-dom";
 
 import Editor from "@monaco-editor/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TextEditor = () => {
   const editorRef = useRef(null);
@@ -26,6 +27,7 @@ const TextEditor = () => {
           defaultValue="// some comment"
           // onMount={handleEditorDidMount}
           theme="vs-dark"
+          loading={<Skeleton className="h-[70vh] w-full"/>}
           className="mx-auto"
           options={{
             lineHeight: 25,

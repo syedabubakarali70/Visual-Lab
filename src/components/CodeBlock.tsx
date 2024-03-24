@@ -6,6 +6,8 @@ import lightTheme from "monaco-themes/themes/GitHub Light.json";
 import { editor } from "monaco-editor";
 import { Monaco } from "@monaco-editor/react";
 import { useTheme } from "next-themes";
+import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 const CodeBlock = ({ children }: { children: string }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
@@ -41,10 +43,16 @@ const CodeBlock = ({ children }: { children: string }) => {
   }
   return (
     <>
-      <div className="w-full my-4 overflow-y-auto">
+      <div className="w-full my-4 overflow-y-auto rounded-2xl">
+        <div className="bg-secondary py-2">
+          <Button variant="link" className="opacity-50">Python</Button>
+          <Button variant="link" className="text-md text-primary bg-primary/50">JavaScript</Button>
+          <Button variant="link">C++</Button>
+        </div>
         <Editor
           height="70vh"
           width="100%"
+          loading={<Skeleton className="h-[70vh] w-full"/>}
           defaultLanguage="python"
           defaultValue={children.trim()}
           theme="light"
@@ -62,6 +70,7 @@ const CodeBlock = ({ children }: { children: string }) => {
             lineDecorationsWidth: 0,
             cursorBlinking: "expand",
             renderLineHighlight: "none",
+            smoothScrolling:true,
             scrollbar: {
               useShadows: false,
               verticalHasArrows: true,
