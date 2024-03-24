@@ -1,14 +1,12 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef,useContext } from "react";
 import Editor from "@monaco-editor/react";
-// import monacoThemes from "monaco-themes/themes/themelist";
 import draculaTheme from "monaco-themes/themes/Dracula.json";
 import { editor } from "monaco-editor";
 import { Monaco } from "@monaco-editor/react";
 const CodeBlock = ({ children }: { children: string }) => {
-  // console.log(monacoThemes);
   const editorRef = useRef({});
-
+// const theme = useContext(ThemeProvider)
   function handleEditorDidMount(editor: editor.IStandaloneCodeEditor, monaco: Monaco) {
     console.log('onMount: the editor instance:', editor);
     console.log('onMount: the monaco instance:', monaco);
@@ -29,9 +27,9 @@ const CodeBlock = ({ children }: { children: string }) => {
   return (
     <>
       {/* <button onClick={showValue}>Show value</button> */}
-      <div className="w-full my-4">
+      <div className="w-full my-4 overflow-y-auto">
         <Editor
-          height="90vh"
+          height="70vh"
           width="100%"
           defaultLanguage="python"
           defaultValue={children.trim()}
@@ -50,7 +48,6 @@ const CodeBlock = ({ children }: { children: string }) => {
             lineNumbersMinChars:0,
             lineDecorationsWidth:0,
             cursorBlinking:"expand",
-            smoothScrolling:true,
             renderLineHighlight:"none",
             scrollbar: {
               useShadows: false,
