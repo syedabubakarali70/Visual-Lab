@@ -1,7 +1,7 @@
 import React from "react";
 import { TypographyH1 } from "@/components/TypographyH1";
 import { TypographyP } from "@/components/TypographyP";
-import CodeBlock from "@/components/CodeBlock";
+import CodeBlock from "@/components/CodeBlock"
 
 const BubbleSort = () => {
   return (
