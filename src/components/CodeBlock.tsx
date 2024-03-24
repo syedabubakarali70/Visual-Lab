@@ -7,7 +7,7 @@ import { editor } from "monaco-editor";
 import { Monaco } from "@monaco-editor/react";
 const CodeBlock = ({ children }: { children: string }) => {
   // console.log(monacoThemes);
-  const editorRef = useRef(null);
+  const editorRef = useRef({});
 
   function handleEditorDidMount(editor: editor.IStandaloneCodeEditor, monaco: Monaco) {
     console.log('onMount: the editor instance:', editor);
