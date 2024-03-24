@@ -19,7 +19,6 @@ const BubbleSort = () => {
             the surface, each element of the array move to the end in each
             iteration. Therefore, it is called a bubble sort.
           </TypographyP>
-        </div>
         <CodeBlock>
 {`
 # Optimized Bubble sort in Python
@@ -60,6 +59,17 @@ print('Sorted Array in Ascending Order:')
 print(data)
 `}
         </CodeBlock>
+          <TypographyP>
+            Just like the movement of air bubbles in the water that rise up to
+            the surface, each element of the array move to the end in each
+            iteration. Therefore, it is called a bubble sort.
+          </TypographyP>
+          <TypographyP>
+            Just like the movement of air bubbles in the water that rise up to
+            the surface, each element of the array move to the end in each
+            iteration. Therefore, it is called a bubble sort.
+          </TypographyP>
+          </div>
       </div>
       
     </>

@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import Editor from "@monaco-editor/react";
 // import monacoThemes from "monaco-themes/themes/themelist";
-import draculaTheme from "monaco-themes/themes/GitHub Dark.json";
+import draculaTheme from "monaco-themes/themes/Dracula.json";
 import { editor } from "monaco-editor";
 import { Monaco } from "@monaco-editor/react";
 const CodeBlock = ({ children }: { children: string }) => {
@@ -29,7 +29,7 @@ const CodeBlock = ({ children }: { children: string }) => {
   return (
     <>
       {/* <button onClick={showValue}>Show value</button> */}
-      <div className="w-full">
+      <div className="w-full my-4">
         <Editor
           height="90vh"
           width="100%"
@@ -37,9 +37,9 @@ const CodeBlock = ({ children }: { children: string }) => {
           defaultValue={children.trim()}
           theme="light"
           onMount={handleEditorDidMount}
-          className="mx-auto"
+          // className="overflow-scroll overflow-y-auto"
           options={{
-            fontSize: 12,
+            fontSize: 14,
             minimap: {
               enabled: false,
             },
@@ -49,7 +49,19 @@ const CodeBlock = ({ children }: { children: string }) => {
             lineNumbers:'off',
             lineNumbersMinChars:0,
             lineDecorationsWidth:0,
-            cursorBlinking:"expand"
+            cursorBlinking:"expand",
+            smoothScrolling:true,
+            renderLineHighlight:"none",
+            scrollbar: {
+              useShadows: false,
+              verticalHasArrows: true,
+              horizontalHasArrows: true,
+              vertical: 'hidden',
+              horizontal: 'hidden',
+              verticalScrollbarSize: 0,
+              horizontalScrollbarSize: 17,
+              alwaysConsumeMouseWheel:false
+            },
           }}
         />
       </div>
