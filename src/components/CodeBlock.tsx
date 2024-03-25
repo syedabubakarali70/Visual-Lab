@@ -15,7 +15,7 @@ import { Skeleton } from "./ui/skeleton";
 //   "C++": string;
 // };
 
-const CodeBlock = ({ code }) => {
+const CodeBlock = ({ code }:{code:object}) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
   const { theme, setTheme } = useTheme();
@@ -57,6 +57,12 @@ const CodeBlock = ({ code }) => {
     console.log(localStorage.fileType);
   }, [selectedFile]);
 
+  // typeof Storage !== "undefined"
+  // ? localStorage.fileType
+  //   ? localStorage.fileType
+  //   : "JavaScript"
+  // : "JavaScript"
+
   return (
     <>
       <div className="w-full my-4 overflow-y-auto border drop-shadow-md border-background-foreground rounded-2xl">
@@ -83,7 +89,7 @@ const CodeBlock = ({ code }) => {
           width="100%"
           loading={<Skeleton className="h-[70vh] w-full" />}
           defaultLanguage="python"
-          value={code[selectedFile].trim()}
+          value={code[selectedFile as keyof typeof code]}
           theme="light"
           onMount={handleEditorDidMount}
           options={{

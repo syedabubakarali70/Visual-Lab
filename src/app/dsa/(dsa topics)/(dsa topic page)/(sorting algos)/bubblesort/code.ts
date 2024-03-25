@@ -1,4 +1,4 @@
-export const code = {
+export const code: Record<string, string> = {
     "JavaScript":`
     # Optimized Bubble sort in JavaScript
     `,
