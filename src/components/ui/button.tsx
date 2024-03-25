@@ -19,6 +19,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-8 hover:underline",
+        codeBlocklink_inactive: "text-primary/50 underline-offset-8 hover:underline",
+        codeBlocklink_active: "text-primary underline-offset-8 underline text-md font-semibold",
         theme_button:"text-3xl",
       },
       size: {
