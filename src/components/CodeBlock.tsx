@@ -8,20 +8,29 @@ import { Monaco } from "@monaco-editor/react";
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
+import { CopyIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner"
+
 
 // type Code = {
 //   "Python": string;
 //   "JavaScript": string;
 //   "C++": string;
 // };
+const checkLocalStorage = () => {
+  if (typeof Storage !== "undefined") {
+    if (localStorage.fileType) {
+      console.log("Setter wala " + localStorage.fileType);
+      return localStorage.fileType;
+    } else return "javascript";
+  } else return "javascript";
+};
 
-const CodeBlock = ({ code }:{code:object}) => {
+const CodeBlock = ({ code }: { code: object }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
   const { theme, setTheme } = useTheme();
-  const [selectedFile, setSelectedFile] = useState(
-    "JavaScript"
-  );
+  const [selectedFile, setSelectedFile] = useState<string>("javascript");
   let codeBlockTheme = theme === "dark" ? "darkTheme" : "lightTheme";
   const monaco = useMonaco();
   useEffect(() => {
@@ -47,50 +56,68 @@ const CodeBlock = ({ code }:{code:object}) => {
     });
     monaco.editor.setTheme(codeBlockTheme);
   }
-  const fileTypes = ["JavaScript", "Python", "C++"];
+  const fileTypes = ["javascript", "python", "cpp"];
   const handleClick = (fileType: string) => {
     setSelectedFile(fileType);
   };
   useEffect(() => {
     localStorage.setItem("fileType", selectedFile);
-    console.log(selectedFile);
-    console.log(localStorage.fileType);
   }, [selectedFile]);
 
-  // typeof Storage !== "undefined"
-  // ? localStorage.fileType
-  //   ? localStorage.fileType
-  //   : "JavaScript"
-  // : "JavaScript"
+  console.log("render");
+
+  async function copyContent() {
+    try {
+      await navigator.clipboard.writeText(
+        code[selectedFile as keyof typeof code]
+      );
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  }
 
   return (
     <>
-      <div className="w-full my-4 overflow-y-auto border drop-shadow-md border-background-foreground rounded-2xl">
-        <div className="bg-secondary py-2">
-          {fileTypes.map((fileType, index) => (
+      <div className="w-full my-4 overflow-y-auto border drop-shadow-md border-background-foreground rounded-xl">
+        <div className="bg-secondary py-2 flex justify-between">
+          <div>
+            {fileTypes.map((fileType, index) => (
+              <Button
+                key={index}
+                variant={
+                  selectedFile == fileType
+                    ? "codeBlocklink_active"
+                    : "codeBlocklink_inactive"
+                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick(fileType);
+                }}
+              >
+                {fileType.charAt(0).toUpperCase() + fileType.slice(1)}
+              </Button>
+            ))}
+          </div>
+          <div className="flex justify-center items-center mr-2">
             <Button
-              key={index}
-              variant={
-                selectedFile === fileType
-                  ? "codeBlocklink_active"
-                  : "codeBlocklink_inactive"
-              }
-              onClick={(e) => {
-                e.stopPropagation();
-                handleClick(fileType);
+              variant="link"
+              size="sm"
+              onClick={() => {
+                copyContent;
+                toast("Code copied to clipboard");
               }}
+              className="hover:bg-primary/10"
             >
-              {fileType}
+              <CopyIcon className="h-4 w-4" />
             </Button>
-          ))}
+          </div>
         </div>
         <Editor
           height="70vh"
           width="100%"
           loading={<Skeleton className="h-[70vh] w-full" />}
-          defaultLanguage="python"
+          language={selectedFile}
           value={code[selectedFile as keyof typeof code]}
-          theme="light"
           onMount={handleEditorDidMount}
           options={{
             fontSize: 14,
@@ -107,7 +134,7 @@ const CodeBlock = ({ code }:{code:object}) => {
             renderLineHighlight: "none",
             smoothScrolling: true,
             folding: false,
-            domReadOnly:true,
+            domReadOnly: true,
             cursorWidth: 0,
             padding: {
               top: 16,
@@ -122,7 +149,6 @@ const CodeBlock = ({ code }:{code:object}) => {
               verticalScrollbarSize: 0,
               horizontalScrollbarSize: 17,
               alwaysConsumeMouseWheel: false,
-              handleMouseWheel:false
             },
           }}
         />

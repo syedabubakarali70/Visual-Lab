@@ -1,9 +1,9 @@
 export const code: Record<string, string> = {
-    "JavaScript":`
+    "javascript":`
     # Optimized Bubble sort in JavaScript
     `,
 
-    "Python":`
+    "python":`
 # Optimized Bubble sort in Python
 
 def bubbleSort(array):
@@ -41,7 +41,7 @@ bubbleSort(data)
 print('Sorted Array in Ascending Order:')
 print(data)
 `,
-    "C++":`
+    "cpp":`
     # Optimized Bubble sort in Cpp
     `
 
