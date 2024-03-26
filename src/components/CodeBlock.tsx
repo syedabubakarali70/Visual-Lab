@@ -103,7 +103,7 @@ const CodeBlock = ({ code }: { code: object }) => {
               variant="link"
               size="sm"
               onClick={() => {
-                copyContent;
+                copyContent();
                 toast("Code copied to clipboard");
               }}
               className="hover:bg-primary/10"
