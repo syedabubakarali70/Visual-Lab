@@ -107,13 +107,11 @@ const CodeBlock = ({ code }:{code:object}) => {
             renderLineHighlight: "none",
             smoothScrolling: true,
             folding: false,
+            domReadOnly:true,
             cursorWidth: 0,
             padding: {
               top: 16,
               bottom: 16,
-            },
-            readOnlyMessage: {
-              value: "",
             },
             scrollbar: {
               useShadows: false,
@@ -124,6 +122,7 @@ const CodeBlock = ({ code }:{code:object}) => {
               verticalScrollbarSize: 0,
               horizontalScrollbarSize: 17,
               alwaysConsumeMouseWheel: false,
+              handleMouseWheel:false
             },
           }}
         />
