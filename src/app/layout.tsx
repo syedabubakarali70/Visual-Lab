@@ -5,8 +5,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/theme-mode-toggle-button";
 import Profile from "@/components/Profile";
 import NavigationDrawer from "@/components/NavigationDrawer";
-import '@radix-ui/themes/styles.css';
-import { Theme, ThemePanel } from '@radix-ui/themes';
+import "@radix-ui/themes/styles.css";
+import { Theme, ThemePanel } from "@radix-ui/themes";
+import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -29,15 +30,17 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <nav className="w-full bg-background text-foreground h-16 flex items-center justify-between p-2 sticky top-0 z-30">
-            <NavigationDrawer/>
-            <div className="text-xl font-normal">Visual Lab</div>
+            <NavigationDrawer />
+            <div className="text-xl font-normal">
+              <Link href={"/"}>Visual Lab</Link>
+            </div>
             <div className=" w-2/3 hidden  opacity-55 justify-start gap-2 p-2 text-lg">
               <a href="">DSA</a>
               <a href="">TextEditor</a>
             </div>
             <div className="flex  justify-between items-center">
               <ModeToggle />
-              <Profile/>
+              <Profile />
             </div>
           </nav>
           {children}
