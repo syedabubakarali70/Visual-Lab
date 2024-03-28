@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Editor, { Monaco, useMonaco } from "@monaco-editor/react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,11 +8,40 @@ import { useTheme } from "next-themes";
 
 import darkTheme from "monaco-themes/themes/Dracula.json";
 import lightTheme from "monaco-themes/themes/GitHub.json";
+import Output from "./Output";
+
+const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
+  fontSize: 14,
+  minimap: {
+    enabled: false,
+  },
+  scrollBeyondLastLine: true,
+  cursorBlinking: "expand",
+  renderLineHighlight: "none",
+  smoothScrolling: true,
+  lineNumbersMinChars: 3,
+  lineDecorationsWidth: 4,
+  padding: {
+    top: 16,
+    bottom: 16,
+  },
+  scrollbar: {
+    useShadows: false,
+    verticalHasArrows: true,
+    horizontalHasArrows: true,
+    // vertical: "hidden",
+    // horizontal: "hidden",
+    verticalScrollbarSize: 0,
+    horizontalScrollbarSize: 17,
+    alwaysConsumeMouseWheel: false,
+  },
+};
 
 const TextEditor = () => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
   const { theme, setTheme } = useTheme();
+  const [value, setValue] = useState("");
   let codeBlockTheme = theme === "dark" ? "darkTheme" : "lightTheme";
   const monaco = useMonaco();
   useEffect(() => {
@@ -22,12 +51,14 @@ const TextEditor = () => {
     }
   }, [theme]);
 
+
   function handleEditorDidMount(
     editor: editor.IStandaloneCodeEditor,
     monaco: Monaco
   ) {
     editorRef.current = editor;
     monacoRef.current = monaco;
+    editor.focus();
     monaco.editor.defineTheme("darkTheme", {
       ...darkTheme,
       base: "vs-dark",
@@ -52,37 +83,14 @@ const TextEditor = () => {
             width="100%"
             loading={<Skeleton className="h-[70vh] w-full" />}
             language="javascript"
-            value="console.log('Hello World')"
+            value={value}
+            onChange={(value) => setValue(value || "")}
             onMount={handleEditorDidMount}
-            options={{
-              fontSize: 14,
-              minimap: {
-                enabled: false,
-              },
-              scrollBeyondLastLine: false,
-              cursorBlinking: "expand",
-              renderLineHighlight: "none",
-              smoothScrolling: true,
-              padding: {
-                top: 16,
-                bottom: 16,
-              },
-              scrollbar: {
-                useShadows: false,
-                verticalHasArrows: true,
-                horizontalHasArrows: true,
-                vertical: "hidden",
-                horizontal: "hidden",
-                verticalScrollbarSize: 0,
-                horizontalScrollbarSize: 17,
-                alwaysConsumeMouseWheel: false,
-              },
-            }}
+            options={editorOptions}
           />
         </div>
-        <div className="bg-secondary w-full md:w-[30%] h-[30%] md:h-auto px-4 py-2 rounded-xl">
-          Hello World
-        </div>
+        
+        <Output editorRef={editorRef.current}/>
       </div>
     </>
   );

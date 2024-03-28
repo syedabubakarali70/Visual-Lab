@@ -130,7 +130,6 @@ const CodeBlock = ({ code }: { code: object }) => {
             lineNumbers: "off",
             lineNumbersMinChars: 0,
             lineDecorationsWidth: 16,
-            cursorBlinking: "expand",
             renderLineHighlight: "none",
             smoothScrolling: true,
             folding: false,
