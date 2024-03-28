@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { editor } from "monaco-editor";
 import React, { useState } from "react";
-import { executeCode, getLanguages } from "../api/route";
+import { executeCode } from "../api/route";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const Output = ({
