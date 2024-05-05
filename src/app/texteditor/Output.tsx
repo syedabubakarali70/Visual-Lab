@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { editor } from "monaco-editor";
-import React, { useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import React from "react";
 import { transform } from "@babel/standalone";
 import { LogsContainer } from "./Console";
 const Output = ({
@@ -42,7 +41,7 @@ const Output = ({
   return (
     <div className="flex flex-col items-stretch border w-full md:w-[30%] h-[30%] md:h-auto px-4 py-2 rounded-xl">
       <div className="w-full">
-        <Button onClick={() => runCode()}>"Run Code"</Button>
+        <Button onClick={() => runCode()}>Run Code</Button>
       </div>
       <LogsContainer />
     </div>
