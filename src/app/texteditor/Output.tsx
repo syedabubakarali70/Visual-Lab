@@ -39,7 +39,7 @@ const Output = ({
   // };
 
   return (
-    <div className="flex flex-col items-stretch border w-full md:w-[30%] h-[30%] md:h-auto px-4 py-2 rounded-xl">
+    <div className="flex flex-col items-stretch border w-full md:w-[30%] h-[30%] md:h-auto px-4 py-2 rounded-xl overflow-scroll">
       <div className="w-full">
         <Button onClick={() => runCode()}>Run Code</Button>
       </div>
