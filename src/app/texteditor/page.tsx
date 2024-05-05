@@ -46,7 +46,6 @@ const TextEditor = () => {
   const monaco = useMonaco();
   useEffect(() => {
     if (monaco) {
-      console.log("here is the monaco instance:", monaco);
       monaco.editor.setTheme(codeBlockTheme);
     }
   }, [theme]);
