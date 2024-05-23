@@ -1,8 +1,10 @@
 import React from "react";
 import { TypographyH1 } from "@/components/TypographyH1";
 import { TypographyP } from "@/components/TypographyP";
-import CodeBlock from "@/components/CodeBlock"
-import {code} from "./code"
+import CodeBlock from "@/components/CodeBlock";
+import { code } from "./code";
+import AnimationContainer from "../../../AnimationContainer";
+import BubbleSortAnimation from "./BubbleSortAnimation";
 const BubbleSort = () => {
   return (
     <>
@@ -19,7 +21,7 @@ const BubbleSort = () => {
             the surface, each element of the array move to the end in each
             iteration. Therefore, it is called a bubble sort.
           </TypographyP>
-        <CodeBlock code={code}/>
+          <CodeBlock code={code} />
           <TypographyP>
             Just like the movement of air bubbles in the water that rise up to
             the surface, each element of the array move to the end in each
@@ -30,9 +32,11 @@ const BubbleSort = () => {
             the surface, each element of the array move to the end in each
             iteration. Therefore, it is called a bubble sort.
           </TypographyP>
-          </div>
+        </div>
+        <AnimationContainer>
+          <BubbleSortAnimation />
+        </AnimationContainer>
       </div>
-      
     </>
   );
 };
