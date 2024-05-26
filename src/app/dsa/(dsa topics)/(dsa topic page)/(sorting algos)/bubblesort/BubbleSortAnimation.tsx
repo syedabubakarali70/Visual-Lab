@@ -1,63 +1,50 @@
-"use client";
 
-import useCreateArray from "../../../useCreateArray";
-import AnimationControls from "../../../AnimationControls";
-import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import NumbersInputField from "../../../NumbersInputField";
-import { useEffect } from "react";
+import { Inumbers } from "../../../useCreateArray";
+const BubbleSortAnimation = ({timeline,numbers,numbersRef}:{timeline:any,numbers:Inumbers[],numbersRef:any}) => {
 
-const BubbleSortAnimation = () => {
-  const tl = gsap.timeline();
-  const [numList, setNumList, numRefs] = useCreateArray([]);
-  useEffect(() => {
-    console.log(numList
-    )
-  },[numList])
+
 
   const { contextSafe } = useGSAP();
 
   const bubbleSort = contextSafe(() => {
-    for (let i = 0; i < numList.length; i++) {
-      for (let j = 0; j < numList.length - i - 1; j++) {
-        const currentRef = numRefs.current[Number(numList[j].index)].box;
-        const nextRef = numRefs.current[Number(numList[j + 1].index)].box;
+    for (let i = 0; i < numbers.length; i++) {
+      for (let j = 0; j < numbers.length - i - 1; j++) {
+        const currentRef = numbersRef.current[Number(numbers[j].index)].box;
+        const nextRef = numbersRef.current[Number(numbers[j + 1].index)].box;
 
-        tl.to([currentRef, nextRef], { y: -20, duration: 0.2 });
+        timeline.to([currentRef, nextRef], { y: -20, duration: 0.2 });
 
-        if (numList[j].value > numList[j + 1].value) {
-          [numList[j], numList[j + 1]] = [numList[j + 1], numList[j]];
+        if (numbers[j].value > numbers[j + 1].value) {
+          [numbers[j], numbers[j + 1]] = [numbers[j + 1], numbers[j]];
 
-          tl.to(currentRef, {
+          timeline.to(currentRef, {
             x: "+=40",
             duration: 0.5,
             ease: "power2.inOut",
           });
-          tl.to(
+          timeline.to(
             nextRef,
             { x: "-=40", duration: 0.5, ease: "power2.inOut" },
             "<"
           );
         }
 
-        tl.to([currentRef, nextRef], {
+        timeline.to([currentRef, nextRef], {
           y: 0,
           duration: 0.2,
           onComplete: () => {
-            console.log(numList);
+            console.log(numbers);
           },
         });
       }
     }
-    tl.play();
+    timeline.play();
   });
 
   return (
     <div>
-      <div id="container" className=" flex justify-center"></div>
-      <button onClick={bubbleSort}>Sort</button>
-      <NumbersInputField setNumList={setNumList} />
-      <AnimationControls tl={tl} />
+      <button onClick={bubbleSort}>Bubble Sort</button>
     </div>
   );
 };

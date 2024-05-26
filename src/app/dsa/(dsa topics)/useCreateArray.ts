@@ -1,19 +1,19 @@
-import { Oxanium } from "next/font/google";
 import { useState, useRef, useEffect } from "react";
 
-interface InumList {
+type Inumbers = {
   value:number,
   index:number
 }
+export type {Inumbers}
 
 
-const useCreateArray = ( numbers:number[] ):[InumList[],any,any] => {
-  const [numList, setNumList] = useState<InumList[]>(numbers.map((num, index) => ({ value: num, index: index })));
+const useCreateArray = ( numbers:number[] ):[Inumbers[],any,any] => {
+  const [numList, setNumList] = useState<Inumbers[]>(numbers.map((num, index) => ({ value: num, index: index })));
   console.log(numList)
   const numRefs = useRef<any[]>([]);
   
   useEffect(() => {
-    const container = document.getElementById("container");
+    const container = document.getElementById("animationContainer");
     if (container) {
       console.log("effect creator")
       numRefs.current = numList.map((num,index) => {

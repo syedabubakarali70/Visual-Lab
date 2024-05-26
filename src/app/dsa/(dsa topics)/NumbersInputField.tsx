@@ -1,3 +1,4 @@
+'use-client'
 import { useState } from "react";
 
 const NumbersInputField = ({setNumList}:{setNumList:any}) => {

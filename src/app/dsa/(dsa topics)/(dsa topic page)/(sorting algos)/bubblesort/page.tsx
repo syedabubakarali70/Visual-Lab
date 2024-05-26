@@ -4,7 +4,6 @@ import { TypographyP } from "@/components/TypographyP";
 import CodeBlock from "@/components/CodeBlock";
 import { code } from "./code";
 import AnimationContainer from "../../../AnimationContainer";
-import BubbleSortAnimation from "./BubbleSortAnimation";
 const BubbleSort = () => {
   return (
     <>
@@ -33,9 +32,8 @@ const BubbleSort = () => {
             iteration. Therefore, it is called a bubble sort.
           </TypographyP>
         </div>
-        <AnimationContainer>
-          <BubbleSortAnimation />
-        </AnimationContainer>
+       
+        <AnimationContainer Animation="Bubble Sort"/>
       </div>
     </>
   );
