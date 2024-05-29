@@ -11,8 +11,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function LoginForm() {
+export default function SignUp() {
   return (
+    <div className="flex justify-center items-center h-[90vh]">
     <Card className="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-xl mx-auto">Sign Up</CardTitle>
@@ -60,12 +61,6 @@ export function LoginForm() {
         </div>
       </CardContent>
     </Card>
-  )
-}
-export default function SignUp() {
-  return (
-    <div className="flex justify-center items-center h-[90vh]">
-      <LoginForm />
-    </div>
+  </div>
   )
 }
