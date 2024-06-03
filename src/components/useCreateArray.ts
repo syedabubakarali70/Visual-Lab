@@ -9,13 +9,11 @@ export type {Inumbers}
 
 const useCreateArray = ( numbers:number[] ):[Inumbers[],any,any] => {
   const [numList, setNumList] = useState<Inumbers[]>(numbers.map((num, index) => ({ value: num, index: index })));
-  console.log(numList)
   const numRefs = useRef<any[]>([]);
   
   useEffect(() => {
     const container = document.getElementById("animationContainer");
     if (container) {
-      console.log("effect creator")
       numRefs.current = numList.map((num,index) => {
         const box = document.createElement("div");
         const span = document.createElement("span");

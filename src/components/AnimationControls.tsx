@@ -3,6 +3,7 @@
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import useInterval from "./useInterval";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,102 +14,105 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const AnimationControls = ({ tl, numbers }: { tl: any; numbers: any }) => {
-  const [time, setTime] = useState([0]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState("1");
-  const setIntervalId = useRef<any>(null);
+const AnimationControls = ({
+  tl,
+  numbers,
+  numRefs,
+  AnimatingFunction,
+}: {
+  tl: any;
+  numbers: any;
+  numRefs: any;
+  AnimatingFunction: any;
+}) => {
+  const [properties, setProperties] = useState({
+    time: [0],
+    isPlaying: false,
+    speed: "1",
+  });
+  const a = useRef(0);
+  useEffect(() => {
+    if (a.current === 1) {
+      AnimatingFunction(tl, numbers, numRefs);
+    }
+  }, [a.current]);
+
+  useInterval(
+    () => {
+      setProperties((prev) => {
+        if (prev.time[0] <= tl.duration()) {
+          if (prev.isPlaying) return { ...prev, time: [prev.time[0] + 0.1] };
+          else return { ...prev };
+        } else return { ...prev };
+      });
+    },
+    properties.isPlaying ? 100 : null
+  );
 
   useEffect(() => {
-    const setIntervalId = setInterval(() => {
-      setTime((prev) => {
-        if (!isPlaying || prev[0] >= tl.duration()) {
-          clearInterval(setIntervalId);
-        }
-        console.log(isPlaying);
-        return [prev[0] + 0.1];
-      });
-    }, 100);
-  }, [isPlaying]);
+    setProperties({...properties, time: [0]})
+    a.current=0;
+  },[numbers])
 
-  const moveSliderForward = () => {
-    setIntervalId.current = setInterval(() => {
-      setTime((prev) => {
-        if (!isPlaying || prev[0] >= tl.duration()) {
-          clearInterval(setIntervalId.current);
-        }
-        return [prev[0] + 0.1];
-      });
-    }, 100);
-  };
-  // const moveSliderBackward = () => {
-  //  setIntervalId.current = setInterval(() => {
-  //     setTime((prev) => {
-  //       if (!isPlaying || prev[0] === 0) {
-  //         clearInterval(setIntervalId.current);
-  //       }
-  //       return [prev[0] - 0.1];
-  //     });
-  //   }, 100);
-  // };
+  useEffect(() => {
+    tl.timeScale(Number(properties.speed));
+    if (properties.isPlaying) {
+      tl.play();
+      if (a.current === 0) a.current = 1;
+    } else {
+      tl.pause();
+    }
+  }, [properties]);
 
   return (
     <div>
       <div className="flex justify-between items-center flex-col">
-        <div className="w-[100%] my-4">
+        <div className="w-[100%] my-4 flex flex-col">
           <Slider
             defaultValue={[0]}
-            max={10}
+            max={tl.duration()}
             step={0.1}
-            value={time}
+            value={properties.time}
             onValueChange={(value) => {
+              setProperties({ ...properties, time: value });
               tl.seek(value[0]);
-              setTime(value);
             }}
           />
+          <div>
+            {Math.floor(properties.time[0])}/{Math.floor(tl.duration())}
+          </div>
         </div>
         <div className="flex gap-2">
           <Button
             variant="outline"
-            onClick={() => {
-              tl.play();
-              setIsPlaying(true);
-            }}
+            onClick={() =>
+              setProperties({
+                ...properties,
+                isPlaying: true,
+              })
+            }
           >
             Play
           </Button>
           <Button
             variant="outline"
-            onClick={() => {
-              tl.pause();
-              setIsPlaying(false);
-            }}
+            onClick={() => setProperties({ ...properties, isPlaying: false })}
           >
             Pause
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => {
-              tl.reverse();
-              // moveSliderBackward();
-              setIsPlaying(true);
-            }}
-          >
-            Reverse
-          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">{speed}x</Button>
+              <Button variant="outline">{properties.speed}x</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel>Playback Speed</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuRadioGroup
-                value={speed}
-                onValueChange={(value) => {
-                  tl.timeScale(Number(value));
-                  setSpeed(value);
-                }}
+                value={properties.speed}
+                onValueChange={(value) =>
+                  setProperties({ ...properties, speed: value })
+                }
               >
                 <DropdownMenuRadioItem value="0.25">0.25</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="0.5">0.5</DropdownMenuRadioItem>

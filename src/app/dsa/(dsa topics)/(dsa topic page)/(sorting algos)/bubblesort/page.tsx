@@ -3,7 +3,7 @@ import { TypographyH1 } from "@/components/TypographyH1";
 import { TypographyP } from "@/components/TypographyP";
 import CodeBlock from "@/components/CodeBlock";
 import { code } from "./code";
-import AnimationContainer from "../../../AnimationContainer";
+import AnimationContainer from "../../../../../../components/AnimationContainer";
 const BubbleSort = () => {
   return (
     <>
@@ -15,6 +15,21 @@ const BubbleSort = () => {
             elements and swaps them until they are in the intended order.
           </TypographyP>
 
+          <TypographyP>
+            Just like the movement of air bubbles in the water that rise up to
+            the surface, each element of the array move to the end in each
+            iteration. Therefore, it is called a bubble sort.
+          </TypographyP>
+          <TypographyP>
+            Just like the movement of air bubbles in the water that rise up to
+            the surface, each element of the array move to the end in each
+            iteration. Therefore, it is called a bubble sort.
+          </TypographyP>
+          <TypographyP>
+            Just like the movement of air bubbles in the water that rise up to
+            the surface, each element of the array move to the end in each
+            iteration. Therefore, it is called a bubble sort.
+          </TypographyP>
           <TypographyP>
             Just like the movement of air bubbles in the water that rise up to
             the surface, each element of the array move to the end in each

@@ -1,11 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import NumbersInputField from "./NumbersInputField";
 import AnimationControls from "./AnimationControls";
-import useCreateArray from "./useCreateArray";
+import useCreateArray from "@/components/useCreateArray";
 import { gsap } from "gsap";
-import { Inumbers } from "./useCreateArray";
-import BubbleSortAnimation from "./(dsa topic page)/(sorting algos)/bubblesort/BubbleSortAnimation";
+import { Inumbers } from "@/components/useCreateArray";
+import bubbleSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/bubblesort/BubbleSortAnimation";
+
 type AnimationProps = {
   timeline: any;
   numbers: Inumbers[];
@@ -20,15 +21,10 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
 
   const getAnimation = (Animation: string) => {
     if (Animation === "Bubble Sort") {
-      return (
-        <BubbleSortAnimation
-          timeline={tl}
-          numbers={numList}
-          numbersRef={numRefs}
-        />
-      );
+      return bubbleSort
     }
   };
+
   return (
     <div className="w-[100%] bg-primary-foreground px-4 py-3 rounded-md">
       <div className="text-lg py-2 border-b-4">{Animation}</div>
@@ -36,10 +32,8 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
         id="animationContainer"
         className=" flex justify-center h-56 items-center"
       ></div>
-
-      {getAnimation(Animation)}
       <NumbersInputField setNumList={setNumList} />
-      <AnimationControls tl={tl} numbers={numList} />
+      <AnimationControls tl={tl} numbers={numList} numRefs = {numRefs}AnimatingFunction = {getAnimation(Animation)} />
     </div>
   );
 };
