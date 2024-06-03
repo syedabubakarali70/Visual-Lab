@@ -9,10 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { userAuth } from "@/app/context/AuthContext";
+import { UserAuth } from "@/app/context/AuthContext";
 
 const Profile = () => {
-  const { user, signInWithGoogle, signOutUser } = userAuth();
+  const { user, signInWithGoogle, signOutUser } = UserAuth();
 
   console.log(user);
   return (
