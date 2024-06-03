@@ -11,7 +11,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Button } from "./ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
@@ -39,7 +38,6 @@ const TopicListNav = () => {
               {algo.name}
             </Link>
           ))}
-          <DrawerFooter></DrawerFooter>
         </DrawerContent>
       </Drawer>
     </nav>

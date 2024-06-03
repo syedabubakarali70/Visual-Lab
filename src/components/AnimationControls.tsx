@@ -41,16 +41,16 @@ const AnimationControls = ({
     () => {
       setProperties((prev) => {
         if (prev.time[0] <= tl.duration()) {
-          if (prev.isPlaying) return { ...prev, time: [prev.time[0] + 0.1] };
+          if (prev.isPlaying) return { ...prev, time: [prev.time[0] + (0.1*Number(properties.speed))] };
           else return { ...prev };
         } else return { ...prev };
       });
     },
-    properties.isPlaying ? 100 : null
+    properties.isPlaying ? (100) : null
   );
 
   useEffect(() => {
-    setProperties({...properties, time: [0]})
+    setProperties({...properties, time: [0],isPlaying:false})
     a.current=0;
   },[numbers])
 

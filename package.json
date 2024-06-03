@@ -32,6 +32,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "console-feed": "^3.6.0",
+    "firebase": "^10.12.2",
     "gsap": "^3.12.5",
     "monaco-editor": "^0.47.0",
     "monaco-themes": "^0.4.4",

@@ -10,7 +10,7 @@ const DSATopicPageLayout = ({
   return (
     <section className="px-4 flex flex-col">
       <TopicListNav />
-      <div className="w-full">{children}</div>
+      <div className="w-full lg:w-[70%] m-auto">{children}</div>
       <Toaster />
     </section>
   );

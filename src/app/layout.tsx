@@ -6,9 +6,9 @@ import { ModeToggle } from "@/components/theme-mode-toggle-button";
 import Profile from "@/components/Profile";
 import NavigationDrawer from "@/components/NavigationDrawer";
 import "@radix-ui/themes/styles.css";
-import { Theme, ThemePanel } from "@radix-ui/themes";
 import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
+import { AuthContextProvider } from "./context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Visual Lab",
@@ -29,6 +29,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <AuthContextProvider>
           <nav className="w-full bg-background text-foreground h-16 flex items-center justify-between p-2 sticky top-0 z-30">
             <NavigationDrawer />
             <div className="text-xl font-normal">
@@ -44,6 +45,7 @@ export default function RootLayout({
             </div>
           </nav>
           {children}
+          </AuthContextProvider>
         </ThemeProvider>
       </body>
     </html>

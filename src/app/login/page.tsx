@@ -1,5 +1,6 @@
 import Link from "next/link"
-
+import { auth } from "@/lib/firebase/clientApp"
+import { signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut, } from "firebase/auth"
 import { Button } from "@/components/ui/button"
 import {
   Card,
