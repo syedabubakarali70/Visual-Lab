@@ -9,7 +9,7 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<any>("Abubakar");
+  const [user, setUser] = useState<any>(null);
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();

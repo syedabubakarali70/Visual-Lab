@@ -23,7 +23,7 @@ const Profile = () => {
             <AvatarIcon className="w-6 h-6" />
           ) : (
             <div className="w-12 h-12 flex justify-center items-center rounded-full border-2">
-              {user.displayName[0]}
+              {user && user.displayName.charAt(0)}
             </div>
           )}
         </DropdownMenuTrigger>
