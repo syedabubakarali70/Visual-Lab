@@ -12,7 +12,6 @@ export const AuthContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [user, setUser] = useState<any>(null);
-  const [progress, setProgress] = useState<any>(null);
   const topics: { [key: string]: boolean } = {};
   SortingAlgoList.forEach((algo) => {
     topics[algo.link] = false;
@@ -20,6 +19,7 @@ export const AuthContextProvider = ({
   DataStructureList.forEach((dataStructure) => {
     topics[dataStructure.link] = false;
   });
+  const [progress, setProgress] = useState<any>(topics);
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -66,7 +66,7 @@ export const AuthContextProvider = ({
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signOutUser,progress }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, signOutUser,progress,setProgress }}>
       {children}
     </AuthContext.Provider>
   );
