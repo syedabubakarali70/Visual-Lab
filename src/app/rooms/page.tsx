@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Link from "next/link";
-const page = () => {
+const Page = () => {
   const { user, signInWithGoogle } = UserAuth();
   const [rooms, loading, error] = useCollection(collection(db, "rooms"));
   console.log(rooms);
@@ -32,4 +32,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
