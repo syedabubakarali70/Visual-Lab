@@ -30,7 +30,7 @@ const [sendMessage, setSendMessage] = useState("Enter message");
 const handleSendMessage = async () => {
     inputRef.current && (inputRef.current.value = ""); 
     dummy.current?.scrollIntoView({ behavior: "smooth" });
-    setSendMessage("");
+    setSendMessage("Message");
     await addDoc(collection(db, "rooms", roomId, "RoomChat"), {
         uid: user.uid,
         text: sendMessage,
@@ -40,7 +40,7 @@ const handleSendMessage = async () => {
 };
 
   return (
-    <div className="w-full md:w-[40%] fixed bottom-4 right-4 h-96 border-2 rounded-md p-2 flex flex-col justify-between">
+    <div className="w-full md:w-[40%] fixed bottom-4 md:right-4 h-96 border-2 rounded-md p-2 flex flex-col justify-between mx-2">
       <div className="overflow-y-scroll">
         {messages?.docs.map((message) => (
           <Message key={message.id} msg={message.data()} uid={user.uid} userName={message.data().sender}/>
