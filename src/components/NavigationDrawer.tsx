@@ -24,10 +24,8 @@ const NavigationDrawer = () => {
       <DrawerContent className="top-0 left-0 right-0 mt-0 w-full rounded-none h-min-screen flex justify-center items-center flex-col gap-4">
             <Link href="/dsa" onClick={handleOpen}>DSA</Link>
             <Link href="/texteditor" onClick={handleOpen}>Text Editor</Link>
-            <Link href="/texteditor" onClick={handleOpen}>Meetings</Link>
-          {/* <DrawerClose asChild>
-            <Button onClick={handleOpen}>Close</Button>
-          </DrawerClose> */}
+            <Link href="/rooms" onClick={handleOpen}>Rooms</Link>
+          
       </DrawerContent>
     </Drawer>
   );
