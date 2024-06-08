@@ -7,12 +7,13 @@ const TopicList = ({ onSelection }: { onSelection: () => void }) => {
   const { progress } = UserAuth();
   return (
     <div>
+      <div className="flex w-full  border-2 rounded-md px-3 py-2 text-lg justify-between bg-secondary" > Sorting Algorithms</div>
       {SortingAlgoList.map((algo, index) => (
         <Link
           href={algo.link}
           key={index}
           onClick={onSelection}
-          className={`flex w-full  border-2 rounded-md px-3 py-2 text-lg justify-between`}
+          className={`flex w-full  border-2 rounded-md px-3 py-2 text-md justify-between`}
         >
           {algo.name}
           <CheckCircledIcon
@@ -26,12 +27,13 @@ const TopicList = ({ onSelection }: { onSelection: () => void }) => {
           />
         </Link>
       ))}
+      <div className="flex w-full  border-2 rounded-md px-3 py-2 text-lg justify-between bg-secondary" > Data Structures</div>
       {DataStructureList.map((algo, index) => (
         <Link
           href={algo.link}
           key={index}
           onClick={onSelection}
-          className="flex w-full  border-2 rounded-md px-3 py-2 text-lg justify-between"
+          className="flex w-full  border-2 rounded-md px-3 py-2 text-md justify-between"
         >
           <span className="inline-block">{algo.name}</span>
           <CheckCircledIcon

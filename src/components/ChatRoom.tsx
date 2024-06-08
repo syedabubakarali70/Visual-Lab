@@ -25,7 +25,10 @@ const ChatRoom = ({ roomId }: { roomId: string }) => {
   );
 const [messages, loading, error] = useCollection(q);
 const [sendMessage, setSendMessage] = useState("Enter message");
-
+const [open, setOpen] = useState('hidden');
+const handleOpen = () => {
+  open === 'hidden' ? setOpen('fixed') : setOpen('hidden');
+}
 
 const handleSendMessage = async () => {
     inputRef.current && (inputRef.current.value = ""); 
@@ -40,7 +43,9 @@ const handleSendMessage = async () => {
 };
 
   return (
-    <div className="w-full md:w-[40%] fixed bottom-4 md:right-4 h-96 border-2 rounded-md p-2 flex flex-col justify-between mx-2">
+    <>
+    <Button onClick={handleOpen}>Chat</Button>
+    <div className={`w-full md:w-[40%] ${open} bottom-4 md:right-4 h-96 border-2 rounded-md p-2 flex flex-col justify-between mx-2 z-10 bg-background`}>
       <div className="overflow-y-scroll">
         {messages?.docs.map((message) => (
           <Message key={message.id} msg={message.data()} uid={user.uid} userName={message.data().sender}/>
@@ -64,6 +69,7 @@ const handleSendMessage = async () => {
         </Button>
       </div>
     </div>
+    </>
   );
 };
 

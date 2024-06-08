@@ -13,8 +13,6 @@ import { UserAuth } from "@/app/context/AuthContext";
 
 const Profile = () => {
   const { user, signInWithGoogle, signOutUser } = UserAuth();
-
-  console.log(user);
   return (
     <div>
       <DropdownMenu>

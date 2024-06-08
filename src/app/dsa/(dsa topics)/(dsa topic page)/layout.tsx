@@ -8,7 +8,7 @@ const DSATopicPageLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <section className="px-4 flex flex-col">
+    <section className="px-4 flex flex-col lg:flex-row">
       <TopicListNav />
       <div className="w-full lg:w-[70%] m-auto">{children}</div>
       <Toaster />

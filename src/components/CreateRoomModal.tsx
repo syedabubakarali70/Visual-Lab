@@ -1,4 +1,4 @@
-import { db } from "@/lib/firebase/clientApp";
+import { db,rdb } from "@/lib/firebase/clientApp";
 import { UserAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -17,18 +17,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { collection, addDoc } from "firebase/firestore";
 import { useState } from "react";
+import { child, push, ref, update } from "firebase/database";
 
 export default function CreateRoomModal() {
   const { user } = UserAuth();
   const [isPublic, setIsPublic] = useState(true);
   const [roomName, setRoomName] = useState("Enter Room Name");
   const handleCreateRoom = async () => {
-  const RoomRef = await addDoc(collection(db, "rooms"), {
-    hostId: user.uid,
-    hostName: user.displayName,
-    public: isPublic,
-    roomName,
-  });
+    const newRoomKey = push(child(ref(rdb), 'chats')).key;
+    const updates: { [key: string]: any } = {};
+    updates["/codes/"+ newRoomKey] = {
+      code: "",
+    };
+    const RoomRef = await addDoc(collection(db, "rooms"), {
+      hostId: user.uid,
+      hostName: user.displayName,
+      public: isPublic,
+      roomName,
+      codeRef: newRoomKey,
+      });
+    return update(ref(rdb), updates)
 }
   return (
     <Dialog>

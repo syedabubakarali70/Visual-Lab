@@ -109,10 +109,10 @@ const TextEditor = () => {
             options={editorOptions}
           />
         </div>
-        <div className="flex items-start">
+        {/* <div className="flex items-start">
           <button onClick={() => executeCodeInWorker(value)}>Run</button>
           <div className="bg-purple-600 h-56 w-8">{output}</div>
-        </div>
+        </div> */}
         <Output editorRef={editorRef.current} />
       </div>
     </>
