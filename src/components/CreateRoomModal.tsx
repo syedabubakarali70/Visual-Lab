@@ -15,33 +15,42 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc,serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
-import { child, push, ref, update } from "firebase/database";
+import { child, push, ref, set, update } from "firebase/database";
+import { useRouter } from "next/navigation";
+import Spinner from "./ui/spinner";
 
 export default function CreateRoomModal() {
   const { user } = UserAuth();
+  const router = useRouter();
   const [isPublic, setIsPublic] = useState(true);
   const [roomName, setRoomName] = useState("Enter Room Name");
+  const [loading, setLoading] = useState(false);
   const handleCreateRoom = async () => {
+    setLoading(true);
     const newRoomKey = push(child(ref(rdb), 'chats')).key;
     const updates: { [key: string]: any } = {};
     updates["/codes/"+ newRoomKey] = {
-      code: "",
+      codes: "",
     };
     const RoomRef = await addDoc(collection(db, "rooms"), {
       hostId: user.uid,
       hostName: user.displayName,
       public: isPublic,
       roomName,
+      createdAt:serverTimestamp(),
       codeRef: newRoomKey,
       });
-    return update(ref(rdb), updates)
+    return update(ref(rdb), updates).then(() => {
+      setLoading(false);
+      router.push(`/rooms/${RoomRef.id}`);
+    });
 }
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Create Room</Button>
+        <Button variant="default">Create Room</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -50,7 +59,7 @@ export default function CreateRoomModal() {
             Anyone who has this link will be able to view this.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex  space-x-2 flex-col">
+        <div className="flex  space-x-2 gap-2 flex-col">
           <div className="flex gap-2 flex-col my-2">
             <Label htmlFor="link">Room Name</Label>
             <Input
@@ -74,7 +83,7 @@ export default function CreateRoomModal() {
               <Label htmlFor="r2">Private</Label>
             </div>
           </RadioGroup>
-          <Button onClick={handleCreateRoom}>Create Room</Button>
+          <Button onClick={handleCreateRoom}>{loading?<Spinner/>:"Create Room"}</Button>
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>

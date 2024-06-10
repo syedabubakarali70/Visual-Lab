@@ -17,7 +17,7 @@ const TopicListNav = () => {
   const [isListOpen, setisListOpen] = useState(false);
   const handleIsListOpen = () => setisListOpen(!isListOpen);
   return (
-    <nav className="lg:w-[27%] max-w-[400px] lg:my-6">
+    <nav className="lg:w-[27%] lg:my-6">
       <div className="lg:hidden">
         <Drawer direction="left" open={isListOpen} onRelease={handleIsListOpen}>
           <DrawerTrigger className="w-full text-md py-2">

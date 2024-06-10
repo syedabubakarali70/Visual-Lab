@@ -16,11 +16,11 @@ const Profile = () => {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger className="cursor-pointer hover:bg-background w-12 h-12 lg:flex justify-center items-center rounded-full">
+        <DropdownMenuTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9  w-9">
           {!user ? (
             <AvatarIcon className="w-6 h-6" />
           ) : (
-            <div className="w-12 h-12 flex justify-center items-center rounded-full border-2">
+            <div className="w-9 h-9 flex justify-center items-center border-2 rounded-full">
               {user && user.displayName.charAt(0)}
             </div>
           )}
