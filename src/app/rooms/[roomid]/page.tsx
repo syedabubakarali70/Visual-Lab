@@ -98,7 +98,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
         <div className="w-full md:w-[70%] h-[70%] md:h-auto drop-shadow-md border-background-foreground rounded-xl overflow-y-auto">
           <Editor
             width="100%"
-            loading={<Skeleton className="h-[70vh] w-full" />}
+            loading={<Skeleton className="w-full md:w-[70%] h-[70%] md:h-auto" />}
             language="javascript"
             value={value}
             onChange={(value) => handleUploadCode(value || "")}

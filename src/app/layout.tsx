@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import logo from "D:/nextjs/visual-lab/public/logo.png";
+import logo from "../../public/logo.png";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/theme-mode-toggle-button";
@@ -11,7 +11,6 @@ import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
 import { AuthContextProvider } from "./context/AuthContext";
 import Image from "next/image";
-import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "Visual Lab",
@@ -36,18 +35,15 @@ export default function RootLayout({
             <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
                 <div className="flex items-center md:hidden">
-                <NavigationDrawer />
+                  <NavigationDrawer />
                 </div>
+                <div className="mr-4 flex">
                   <Link href={"/"} className="mr-6 flex items-center space-x-2">
-                    <Image
-                      src={logo}
-                      alt="logo"
-                      width={32}
-                      height={32}
-                    />
-                    <span className=" font-bold sm:inline-block">Visual Lab</span>
+                    <Image src={logo} alt="logo" width={32} height={32} />
+                    <span className=" font-bold sm:inline-block">
+                      Visual Lab
+                    </span>
                   </Link>
-                <div className="mr-4 hidden md:flex">
                   <div className="items-center gap-4 text-sm lg:gap-6 hidden md:flex">
                     <Link
                       href={"/dsa"}
@@ -55,8 +51,18 @@ export default function RootLayout({
                     >
                       DSA
                     </Link>
-                    <Link href={"/texteditor"} className="transition-colors hover:text-foreground/80 text-foreground/60">Text Editor</Link>
-                    <Link href={"/rooms"} className="transition-colors hover:text-foreground/80 text-foreground/60">Rooms</Link>
+                    <Link
+                      href={"/texteditor"}
+                      className="transition-colors hover:text-foreground/80 text-foreground/60"
+                    >
+                      Text Editor
+                    </Link>
+                    <Link
+                      href={"/rooms"}
+                      className="transition-colors hover:text-foreground/80 text-foreground/60"
+                    >
+                      Rooms
+                    </Link>
                   </div>
                 </div>
 
@@ -66,10 +72,7 @@ export default function RootLayout({
                 </div>
               </div>
             </nav>
-            <section className="container max-w-screen-2xl">
-
-            {children}
-            </section>
+            <section className="container max-w-screen-2xl">{children}</section>
           </AuthContextProvider>
         </ThemeProvider>
       </body>

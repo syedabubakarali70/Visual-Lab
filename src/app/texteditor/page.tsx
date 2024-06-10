@@ -93,7 +93,6 @@ const TextEditor = () => {
     });
     monaco.editor.setTheme(codeBlockTheme);
   }
-  console.log(value);
 
   return (
     <>
