@@ -6,6 +6,7 @@ import useCreateArray from "@/components/useCreateArray";
 import { gsap } from "gsap";
 import { Inumbers } from "@/components/useCreateArray";
 import bubbleSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/bubblesort/BubbleSortAnimation";
+import mergeSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/mergesort/mergeSortAnimation";
 
 type AnimationProps = {
   timeline: any;
@@ -21,8 +22,16 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
 
   const getAnimation = (Animation: string) => {
     if (Animation === "Bubble Sort") {
-      return bubbleSort
+      return bubbleSort;
     }
+    else if (Animation === "Merge Sort") {
+      return mergeSort;
+    }
+  };
+
+  const swapsandComparisons = {
+    comparisons: 0,
+    swaps: 0,
   };
 
   return (
@@ -32,8 +41,23 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
         id="animationContainer"
         className=" flex justify-center h-56 items-center"
       ></div>
+      <div>
+        <div>
+          Comparisons:
+          <span id="comparisons">{swapsandComparisons.comparisons}</span>
+        </div>
+        <div>
+          Swaps:<span id="swaps">{swapsandComparisons.swaps}</span>
+        </div>
+      </div>
       <NumbersInputField setNumList={setNumList} />
-      <AnimationControls tl={tl} numbers={numList} numRefs = {numRefs}AnimatingFunction = {getAnimation(Animation)} />
+      <AnimationControls
+        tl={tl}
+        numbers={numList}
+        numRefs={numRefs}
+        AnimatingFunction={getAnimation(Animation)}
+        swapsandComparisons={swapsandComparisons}
+      />
     </div>
   );
 };

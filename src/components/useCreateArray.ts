@@ -18,7 +18,7 @@ const useCreateArray = ( numbers:number[] ):[Inumbers[],any,any] => {
         const box = document.createElement("div");
         const span = document.createElement("span");
         span.innerHTML = num.value.toString();
-        box.classList.add("flex","px-2","py-1","rounded-md","shadow-md","items-center","justify-center","space-x-1","b-2","bg-primary","w-10","text-primary-background","font-semibold");
+        box.classList.add("flex","px-2","py-1","rounded-md","shadow-md","items-center","justify-center","space-x-1","b-2","bg-primary","w-[8%]","text-primary-background","font-semibold");
         span.classList.add("text-lg","font-semibold",'text-primary-foreground');
         box.appendChild(span);
         container.appendChild(box);

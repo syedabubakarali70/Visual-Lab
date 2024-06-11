@@ -19,11 +19,13 @@ const AnimationControls = ({
   numbers,
   numRefs,
   AnimatingFunction,
+  swapsandComparisons,
 }: {
   tl: any;
   numbers: any;
   numRefs: any;
   AnimatingFunction: any;
+  swapsandComparisons: any;
 }) => {
   const [properties, setProperties] = useState({
     time: [0],
@@ -33,7 +35,7 @@ const AnimationControls = ({
   const a = useRef(0);
   useEffect(() => {
     if (a.current === 1) {
-      AnimatingFunction(tl, numbers, numRefs);
+      AnimatingFunction(tl, numbers, numRefs,swapsandComparisons);
     }
   }, [a.current]);
 
