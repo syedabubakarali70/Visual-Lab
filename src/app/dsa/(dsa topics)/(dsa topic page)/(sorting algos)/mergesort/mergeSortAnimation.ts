@@ -1,5 +1,5 @@
 import { Inumbers } from "@/components/useCreateArray";
-import { on } from "events";
+
 
 const mergeSort = (
   timeline: any,
@@ -7,8 +7,10 @@ const mergeSort = (
   numbersRef: any
   //   swapsandComparisons: any
 ): Inumbers[] => {
+
+
   if (numbers.length <= 1) {
-    return numbers;
+    return numbers; 
   }
   const middle = Math.floor(numbers.length / 2);
   const left = numbers.slice(0, middle);
@@ -19,28 +21,20 @@ const mergeSort = (
     const currentRef = numbersRef.current[Number(left[i].index)].box;
     timeline.to(currentRef, { y: "+=40", duration: 0.2 }, "beforLeft");
   }
+  console.log("left");
   const leftArr = mergeSort(timeline, left, numbersRef);
-  timeline.add("afterLeft", "+=0.2");
-
-  //   for (let i = 0; i < left.length; i++) {
-  //     const currentRef = numbersRef.current[Number(left[i].index)].box;
-  //     timeline.to(currentRef, { y: "-=40", duration: 0.2 }, "afterLeft");
-  //   }
+ 
   timeline.add("beforRight", "+=0.2");
 
   for (let i = 0; i < right.length; i++) {
     const currentRef = numbersRef.current[Number(right[i].index)].box;
     timeline.to(currentRef, { y: "+=40", duration: 0.2 }, "beforRight");
   }
+  console.log("right");
   const rightArr = mergeSort(timeline, right, numbersRef);
-  timeline.add("afterRight", "+=0.2");
 
-  //   for (let i = 0; i < right.length; i++) {
-  //     const currentRef = numbersRef.current[Number(right[i].index)].box;
-  //     timeline.to(currentRef, { y: "-=40", duration: 0.2 }, "afterRight");
-  //   }
   const mergedArray = merge(leftArr, rightArr, timeline, numbersRef);
-
+console.log(mergedArray);
   return mergedArray;
 };
 
@@ -50,11 +44,13 @@ function merge(
   timeline: any,
   numbersRef: any
 ): Inumbers[] {
+    console.log("merge")
   const resultArray: Inumbers[] = [];
   let leftIndex = 0,
     rightIndex = 0;
 
   while (leftIndex < left.length && rightIndex < right.length) {
+    console.log("while")
     if (left[leftIndex].value < right[rightIndex].value) {
       let element = numbersRef.current[left[leftIndex].index].box;
       const xValue = () => {
@@ -69,6 +65,7 @@ function merge(
         ease: "power2.inOut",
       });
       resultArray.push(left[leftIndex]);
+      leftIndex++;
     } else {
       let element = numbersRef.current[right[rightIndex].index].box;
       const xValue = () => {
@@ -119,5 +116,6 @@ function merge(
 
   return resultArray;
 }
+
 
 export default mergeSort;

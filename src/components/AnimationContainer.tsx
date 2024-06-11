@@ -18,7 +18,7 @@ export type { AnimationProps };
 
 const AnimationContainer = ({ Animation }: { Animation: string }) => {
   const tl = gsap.timeline();
-  const [numList, setNumList, numRefs] = useCreateArray([5, 4, 3, 2, 1]);
+  const [numList, setNumList, numRefs] = useCreateArray([5,4,3,2,1]);
 
   const getAnimation = (Animation: string) => {
     if (Animation === "Bubble Sort") {
