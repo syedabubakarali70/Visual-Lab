@@ -13,15 +13,20 @@ const useCreateArray = ( numbers:number[] ):[Inumbers[],any,any] => {
   
   useEffect(() => {
     const container = document.getElementById("animationContainer");
-    if (container) {
+    const mainArray = document.getElementById("mainArray");
+    if (container && mainArray) {
       numRefs.current = numList.map((num,index) => {
         const box = document.createElement("div");
         const span = document.createElement("span");
+        const indexes = document.createElement("span");
         span.innerHTML = num.value.toString();
-        box.classList.add("flex","px-2","py-1","rounded-md","shadow-md","items-center","justify-center","space-x-1","b-2","bg-primary","w-[8%]","text-primary-background","font-semibold");
-        span.classList.add("text-lg","font-semibold",'text-primary-foreground');
+        box.classList.add("flex","flex-col","shadow-md","items-center","justify-center","border-2","border-slate-500","border-l-0","first:border-l-2");
+        indexes.classList.add("flex","shadow-md","items-center","justify-center","px-2","border-slate-500","border-b-2","w-full")
+        indexes.innerHTML = index.toString();
+        span.classList.add("text-lg","font-semibold",'text-primary-foreground',"rounded-full","p-1","bg-primary","w-8","h-8","items-center","justify-center","flex","mx-2","my-1");
+        box.appendChild(indexes);
         box.appendChild(span);
-        container.appendChild(box);
+        mainArray.appendChild(box);
         return {
           value: num,
           index: index,
@@ -32,9 +37,10 @@ const useCreateArray = ( numbers:number[] ):[Inumbers[],any,any] => {
     }
     return () => {
 
-       container && numRefs.current.forEach((numRef) => {
+       container && mainArray && numRefs.current.forEach((numRef) => {
           numRef.box.removeChild(numRef.span);
-          container.removeChild(numRef.box);
+          mainArray.removeChild(numRef.box);
+          
         });
       }
   }, [numList])

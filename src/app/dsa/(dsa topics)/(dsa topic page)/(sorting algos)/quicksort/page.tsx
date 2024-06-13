@@ -1,8 +1,9 @@
-import React from 'react'
-
+import AnimationContainer from "@/components/AnimationContainer"
 const QuickSort = () => {
   return (
-    <div>QuickSort</div>
+    <div>
+      <AnimationContainer Animation="Quick Sort" />
+    </div>
   )
 }
 

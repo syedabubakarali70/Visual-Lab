@@ -32,12 +32,12 @@ const AnimationControls = ({
     isPlaying: false,
     speed: "1",
   });
-  const a = useRef(0);
+  const played = useRef(0);
   useEffect(() => {
-    if (a.current === 1) {
-      AnimatingFunction(tl, numbers, numRefs,swapsandComparisons);
+    if (played.current === 1) {
+      AnimatingFunction(tl, numbers, numRefs);
     }
-  }, [a.current]);
+  }, [played.current]);
 
   useInterval(
     () => {
@@ -53,14 +53,14 @@ const AnimationControls = ({
 
   useEffect(() => {
     setProperties({...properties, time: [0],isPlaying:false})
-    a.current=0;
+    played.current=0;
   },[numbers])
 
   useEffect(() => {
     tl.timeScale(Number(properties.speed));
     if (properties.isPlaying) {
       tl.play();
-      if (a.current === 0) a.current = 1;
+      if (played.current === 0) played.current = 1;
     } else {
       tl.pause();
     }

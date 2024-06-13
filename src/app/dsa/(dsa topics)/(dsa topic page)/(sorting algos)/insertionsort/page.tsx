@@ -1,8 +1,11 @@
-import React from 'react'
+import AnimationContainer from "@/components/AnimationContainer"
 
 const InsertionSort = () => {
   return (
-    <div>InsertionSort</div>
+    <div>
+
+      <AnimationContainer Animation="Insertion Sort" />
+    </div>
   )
 }
 
