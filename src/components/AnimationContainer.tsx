@@ -28,27 +28,10 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
     if (Animation === "Bubble Sort") {
       return bubbleSort;
     }
-    else if (Animation === "Merge Sort") {
-      const container = document.getElementById("animationContainer");
-      const state = Flip.getState(container);
-
-// now alter the state by toggling a class:
- container && container.classList.toggle(".items-center");
- container && container.classList.toggle(".items-start");
-
-// now do a "Flip" animation from the previous state to the new one:
-tl.add(Flip.from(state, {
-  duration: 1,
-  ease: "power1.inOut",
-  absolute: true,
-}))
+    else if (Animation === "Merge Sort") {   
       return mergeSort;
     }
     else if (Animation === "Quick Sort") {
-      tl.eventCallback("onComplete", () => {
-        console.log("done");
-        numRefs.current.map((ref: any) => tl.set(ref.span,{opacity: 1}));
-      })
       return quickSort;
     }
     else if(Animation === "Insertion Sort"){
