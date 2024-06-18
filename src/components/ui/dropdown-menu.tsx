@@ -63,8 +63,13 @@ DropdownMenuSubContent.displayName =
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
-  <DropdownMenuPrimitive.Portal container={document.getElementById("animation")}>
+>(({ className, sideOffset = 4, ...props }, ref) => {
+  const container = React.useRef<HTMLElement | null>(null);
+  React.useEffect(() => {
+    container.current = document.getElementById("animation");
+  }, []);
+  return (
+  <DropdownMenuPrimitive.Portal container={container.current}>
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
@@ -76,7 +81,8 @@ const DropdownMenuContent = React.forwardRef<
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
-))
+  )
+})
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
 
 const DropdownMenuItem = React.forwardRef<
