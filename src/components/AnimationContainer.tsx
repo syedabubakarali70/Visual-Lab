@@ -10,6 +10,7 @@ import bubbleSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/
 import mergeSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/mergesort/mergeSortAnimation";
 import quickSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/quicksort/quickSortAnimation";
 import insertionSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/insertionsort/insertionSortAnimation";
+import selectionSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/selectionsort/selectionSortAnimation";
 
 gsap.registerPlugin(Flip);
 type AnimationProps = {
@@ -37,6 +38,9 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
     else if(Animation === "Insertion Sort"){
       return insertionSort;
     }
+    else if(Animation === "Selection Sort"){
+      return selectionSort;
+    }
   };
 
   const swapsandComparisons = {
@@ -45,15 +49,15 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
   };
 
   return (
-    <div className="w-[100%] bg-primary-foreground px-4 py-3 rounded-md">
+    <div className="w-[100%] bg-primary-foreground px-4 py-3 rounded-md h-[100vh] flex flex-col justify-between" id="animation">
       <div className="text-lg py-2 border-b-4">{Animation}</div>
       <div
         id="animationContainer"
-        className=" flex justify-center h-56 items-center"
+        className=" flex justify-center items-center grow"
       >
         <div id="mainArray" className="flex"></div>
       </div>
-      <div>
+      {/* <div>
         <div>
           Comparisons:
           <span id="comparisons">{swapsandComparisons.comparisons}</span>
@@ -61,7 +65,7 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
         <div>
           Swaps:<span id="swaps">{swapsandComparisons.swaps}</span>
         </div>
-      </div>
+      </div> */}
       <NumbersInputField setNumList={setNumList} />
       <AnimationControls
         tl={tl}

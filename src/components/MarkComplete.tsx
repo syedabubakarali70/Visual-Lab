@@ -8,25 +8,27 @@ const MarkComplete = ({ topic }: { topic: string }) => {
   let docRef: any;
   if (user) docRef = doc(db, "users", user.uid);
 
-  const hancleMarkClick = () => {
+  const handleMarkClick = () => {
     if (progress) {
       setProgress({
         ...progress,
         [topic]: true,
       });
-      setDoc(
-        docRef,
-        {
-          [topic]: true,
-        },
-        { merge: true }
-      );
+      if (user) {
+        setDoc(
+          docRef,
+          {
+            [topic]: true,
+          },
+          { merge: true }
+        );
+      }
     }
   };
   return (
     <div className="flex justify-center w-full">
       <Button
-        onClick={hancleMarkClick}
+        onClick={handleMarkClick}
         variant="outline"
         className="text-md px-3"
       >

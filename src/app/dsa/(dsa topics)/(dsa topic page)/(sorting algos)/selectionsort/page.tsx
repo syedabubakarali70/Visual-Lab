@@ -1,8 +1,11 @@
+import AnimationContainer from '@/components/AnimationContainer'
 import React from 'react'
 
 const SelectionSort = () => {
   return (
-    <div>SelectionSort</div>
+    <div>
+      <AnimationContainer Animation="Selection Sort" />
+    </div>
   )
 }
 
