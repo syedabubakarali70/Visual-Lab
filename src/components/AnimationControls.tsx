@@ -139,7 +139,7 @@ const AnimationControls = ({
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">{properties.speed}x</Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+              <DropdownMenuContent className="w-56" containerDiv="animation">
                 <DropdownMenuLabel>Playback Speed</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup

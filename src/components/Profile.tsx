@@ -25,7 +25,7 @@ const Profile = () => {
             </div>
           )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent containerDiv="nav">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {!user ? (
