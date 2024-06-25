@@ -91,10 +91,14 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     monaco.editor.setTheme(codeBlockTheme);
   }
   return (
-    <>
+    <section className="h-[85vh]">
+    <div className="border pl-4 rounded-md flex justify-between items-center my-2">
+      <span className="text-md font-semibold">{roomInfo?.data()?.roomName}</span>
       <ChatRoom roomId={params.roomid} />
 
-      <div className="w-full px-4 h-[90vh] flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
+    </div>
+
+      <div className="w-full h-full flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
         <div className="w-full md:w-[70%] h-[70%] md:h-auto drop-shadow-md border-background-foreground rounded-xl overflow-y-auto">
           <Editor
             width="100%"
@@ -108,7 +112,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
         </div>
         <Output editorRef={editorRef.current} />
       </div>
-    </>
+    </section>
   );
 };
 

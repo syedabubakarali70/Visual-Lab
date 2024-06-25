@@ -33,12 +33,12 @@ export default function RootLayout({
         >
           <AuthContextProvider>
             <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" id="nav">
-              <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
+              <div className="px-4 md:container flex h-14 max-w-screen-2xl items-center justify-between">
                 <div className="flex items-center md:hidden">
                   <NavigationDrawer />
                 </div>
-                <div className="mr-4 flex">
-                  <Link href={"/"} className="mr-6 flex items-center space-x-2">
+                <div className="flex justify-center ml-4 md:ml-0">
+                  <Link href={"/"} className="flex items-center space-x-2 md:mr-8">
                     <Image src={logo} alt="logo" width={32} height={32} />
                     <span className=" font-bold sm:inline-block">
                       Visual Lab
@@ -72,7 +72,7 @@ export default function RootLayout({
                 </div>
               </div>
             </nav>
-            <section className="container max-w-screen-2xl">{children}</section>
+            <section className="px-4 md:container max-w-screen-2xl">{children}</section>
           </AuthContextProvider>
         </ThemeProvider>
       </body>

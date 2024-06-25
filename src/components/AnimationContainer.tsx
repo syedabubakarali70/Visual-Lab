@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { Flip } from "gsap/Flip";
 import { Inumbers } from "@/components/useCreateArray";
 import bubbleSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/bubblesort/BubbleSortAnimation";
+import BubbleSortPseudoCode from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/bubblesort/BubbleSortPseudoCode";
 import mergeSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/mergesort/mergeSortAnimation";
 import quickSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/quicksort/quickSortAnimation";
 import insertionSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/insertionsort/insertionSortAnimation";
@@ -23,22 +24,18 @@ export type { AnimationProps };
 
 const AnimationContainer = ({ Animation }: { Animation: string }) => {
   const tl = gsap.timeline();
-  const [numList, setNumList, numRefs] = useCreateArray([5,4,3,2,1]);
+  const [numList, setNumList, numRefs] = useCreateArray([5, 4, 3, 2, 1]);
 
   const getAnimation = (Animation: string) => {
     if (Animation === "Bubble Sort") {
       return bubbleSort;
-    }
-    else if (Animation === "Merge Sort") {   
+    } else if (Animation === "Merge Sort") {
       return mergeSort;
-    }
-    else if (Animation === "Quick Sort") {
+    } else if (Animation === "Quick Sort") {
       return quickSort;
-    }
-    else if(Animation === "Insertion Sort"){
+    } else if (Animation === "Insertion Sort") {
       return insertionSort;
-    }
-    else if(Animation === "Selection Sort"){
+    } else if (Animation === "Selection Sort") {
       return selectionSort;
     }
   };
@@ -49,7 +46,10 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
   };
 
   return (
-    <div className="w-[100%] bg-primary-foreground px-4 py-3 rounded-md h-[100vh] flex flex-col justify-between" id="animation">
+    <div
+      className="w-[100%] bg-primary-foreground px-4 py-3 rounded-md h-[100vh] flex flex-col justify-between"
+      id="animation"
+    >
       <div className="text-lg py-2 border-b-4">{Animation}</div>
       <div
         id="animationContainer"
@@ -57,16 +57,22 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
       >
         <div id="mainArray" className="flex"></div>
       </div>
+
       {/* <div>
         <div>
-          Comparisons:
-          <span id="comparisons">{swapsandComparisons.comparisons}</span>
+        Comparisons:
+        <span id="comparisons">{swapsandComparisons.comparisons}</span>
         </div>
         <div>
-          Swaps:<span id="swaps">{swapsandComparisons.swaps}</span>
+        Swaps:<span id="swaps">{swapsandComparisons.swaps}</span>
         </div>
-      </div> */}
-      <NumbersInputField setNumList={setNumList} />
+        </div> */}
+      <div className="flex justify-between items-end">
+        <NumbersInputField setNumList={setNumList} />
+        <div className="flex justify-between border-2 border-primary/70 rounded-md  py-2 px-4">
+          <BubbleSortPseudoCode />
+        </div>
+      </div>
       <AnimationControls
         tl={tl}
         numbers={numList}

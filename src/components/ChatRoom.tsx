@@ -15,6 +15,7 @@ import { UserAuth } from "@/app/context/AuthContext";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useRef, useState } from "react";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 const ChatRoom = ({ roomId }: { roomId: string }) => {
   const { user } = UserAuth();
   const dummy = useRef<HTMLDivElement>(null);
@@ -44,9 +45,9 @@ const handleSendMessage = async () => {
 
   return (
     <>
-    <Button onClick={handleOpen}>Chat</Button>
-    <div className={`w-full md:w-[40%] ${open} bottom-4 md:right-4 h-96 border-2 rounded-md p-2 flex flex-col justify-between mx-2 z-10 bg-background chatbox`}>
-      <div className="overflow-y-scroll">
+    <Button onClick={handleOpen} variant={"ghost"}><ChatBubbleIcon/></Button>
+    <div className={`w-full md:w-[25%] ${open} bottom-4 md:right-4 h-96 border-2 rounded-md p-2 flex flex-col justify-between mx-2 z-10 bg-background chatbox`}>
+      <div className="overflow-y-scroll chatbox">
         {messages?.docs.map((message) => (
           <Message key={message.id} msg={message.data()} uid={user.uid} userName={message.data().sender}/>
         ))}

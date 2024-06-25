@@ -3,6 +3,7 @@ import { editor } from "monaco-editor";
 import React from "react";
 import { transform } from "@babel/standalone";
 import { LogsContainer } from "./Console";
+import { PlayIcon } from "@radix-ui/react-icons";
 const Output = ({
   editorRef,
 }: {
@@ -21,27 +22,11 @@ const Output = ({
     }
   }
 
-  // const runCode = async () => {
-  //   if (!editorRef) return;
-  //   try {
-  //     setIsLoading(true);
-  //     // let res = await getLanguages();
-  //     const { run: result } = await executeCode(
-  //       "javascript",
-  //       "1.32.3",
-  //       editorRef.getValue()
-  //     );
-  //     setOutput(result.output);
-  //   } catch (error) {
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   return (
-    <div className="flex flex-col items-stretch border w-full md:w-[30%] h-[30%] md:h-auto px-4 py-2 rounded-xl overflow-scroll chatbox">
-      <div className="w-full flex justify-end pb-2">
-        <Button onClick={() => runCode()}>Run Code</Button>
+    <div className="flex flex-col items-stretch border w-full md:w-[30%] h-[30%] md:h-auto py-2 rounded-xl overflow-scroll chatbox">
+      <div className="w-full flex justify-between items-center pb-2 pl-4 border-bottom-2">
+        <span className="text-sm font-semibold">Console</span>
+        <Button onClick={() => runCode()} variant={"ghost"} className="rounded-full"><PlayIcon/></Button>
       </div>
       <LogsContainer />
     </div>
