@@ -1,4 +1,4 @@
-import { db,rdb } from "@/lib/firebase/clientApp";
+import { db, rdb } from "@/lib/firebase/clientApp";
 import { UserAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { collection, addDoc,serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import { child, push, ref, set, update } from "firebase/database";
 import { useRouter } from "next/navigation";
@@ -27,26 +27,57 @@ export default function CreateRoomModal() {
   const [isPublic, setIsPublic] = useState(true);
   const [roomName, setRoomName] = useState("Enter Room Name");
   const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
   const handleCreateRoom = async () => {
     setLoading(true);
-    const newRoomKey = push(child(ref(rdb), 'chats')).key;
-    const updates: { [key: string]: any } = {};
-    updates["/codes/"+ newRoomKey] = {
-      codes: "",
+    const newRoomKey = push(child(ref(rdb), "rooms")).key;
+    const roomData = {
+      code: "",
+      hostId: user.uid,
+      hostName: user.displayName,
+
     };
-    const RoomRef = await addDoc(collection(db, "rooms"), {
+
+    // First update: Create the room
+    const roomUpdates: { [key: string]: any } = {};
+    roomUpdates["/rooms/" + newRoomKey] = roomData;
+    const firestoreRoomData={
       hostId: user.uid,
       hostName: user.displayName,
       public: isPublic,
       roomName,
-      createdAt:serverTimestamp(),
+      createdAt: serverTimestamp(),
       codeRef: newRoomKey,
+      ...(isPublic===false && {password})
+    }
+    const RoomRef = await addDoc(collection(db, "rooms"),firestoreRoomData );
+    return update(ref(rdb), roomUpdates)
+      .then(() => {
+        // Second update: Add the member
+        const memberData = {
+          memberId: user.uid,
+          memberName: user.displayName,
+          isAdmin: true,
+          isOnline:true
+        };
+        const memberUpdates: { [key: string]: any } = {};
+        memberUpdates["/rooms/" + newRoomKey + "/members/" + user.uid] =
+          memberData;
+        update(ref(rdb), memberUpdates)
+          .then(() => {
+            console.log("Room and member added successfully");
+
+            setLoading(false);
+            router.push(`/rooms/${RoomRef.id}`);
+          })
+          .catch((error) => {
+            console.error("Error adding member: ", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error creating room: ", error);
       });
-    return update(ref(rdb), updates).then(() => {
-      setLoading(false);
-      router.push(`/rooms/${RoomRef.id}`);
-    });
-}
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -83,7 +114,19 @@ export default function CreateRoomModal() {
               <Label htmlFor="r2">Private</Label>
             </div>
           </RadioGroup>
-          <Button onClick={handleCreateRoom}>{loading?<Spinner/>:"Create Room"}</Button>
+          {!isPublic && (
+            <div className="flex gap-2 flex-col my-2">
+            <Label htmlFor="link">Password</Label>
+            <Input
+              id="link"
+              defaultValue="Enter Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          )}
+          <Button onClick={handleCreateRoom}>
+            {loading ? <Spinner /> : "Create Room"}
+          </Button>
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>

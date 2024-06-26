@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { editor } from "monaco-editor";
 import { useTheme } from "next-themes";
 
-import darkTheme from "monaco-themes/themes/Dracula.json";
+import darkTheme from "monaco-themes/themes/Blackboard.json";
 import lightTheme from "monaco-themes/themes/GitHub.json";
 import Output from "./Output";
 
@@ -96,11 +96,13 @@ const TextEditor = () => {
 
   return (
     <>
-      <div className="w-full px-4 h-[90vh] flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
+      <div className="w-full h-[90vh] flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
         <div className="w-full md:w-[70%] h-[70%] md:h-auto drop-shadow-md border-background-foreground rounded-xl overflow-y-auto">
           <Editor
             width="100%"
-            loading={<Skeleton className="w-full md:w-[70%] h-[70%] md:h-auto" />}
+            loading={
+              <Skeleton className="w-full md:w-[70%] h-[70%] md:h-auto" />
+            }
             language="javascript"
             value={value}
             onChange={(value) => setValue(value || "")}
@@ -112,7 +114,9 @@ const TextEditor = () => {
           <button onClick={() => executeCodeInWorker(value)}>Run</button>
           <div className="bg-purple-600 h-56 w-8">{output}</div>
         </div> */}
-        <Output editorRef={editorRef.current} />
+        <div className="w-full md:w-[30%] h-[30%] md:h-auto">
+          <Output editorRef={editorRef.current} open={false} />
+        </div>
       </div>
     </>
   );

@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { editor } from "monaco-editor";
 import { useTheme } from "next-themes";
 
-import darkTheme from "monaco-themes/themes/Dracula.json";
+import darkTheme from "monaco-themes/themes/Blackboard.json";
 import lightTheme from "monaco-themes/themes/GitHub.json";
 import Output from "@/app/texteditor/Output";
 import { useObjectVal } from "react-firebase-hooks/database";
@@ -15,7 +15,9 @@ import { ref, update } from "firebase/database";
 import { rdb, db } from "@/lib/firebase/clientApp";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { collection, doc } from "firebase/firestore";
-
+import RoomMembers from "@/components/RoomMembers";
+import { Button } from "@/components/ui/button";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   fontSize: 14,
   minimap: {
@@ -45,26 +47,30 @@ const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
 const Page = ({ params }: { params: { roomid: string } }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
+  const [open, setOpen] = useState(true);
+  const handleOpen = () => {setOpen(!open)};
   const { theme, setTheme } = useTheme();
-  const [roomInfo, loading, error] = useDocument(
+  const [roomInfo, roomLoading, roomError] = useDocument(
     doc(db, "rooms", params.roomid)
   );
-  const [code, codeLoading, codeError] = useObjectVal(ref(rdb, "codes/" + roomInfo?.data()?.codeRef +"/codes") ) as [any, boolean, Error];
+  const [code, codeLoading, codeError] = useObjectVal(
+    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/code")
+  ) as [any, boolean, Error];
   const [value, setValue] = useState("");
-  
+
   const handleUploadCode = (value: string) => {
     const updates: { [key: string]: any } = {};
-    updates["/codes/" + roomInfo?.data()?.codeRef+'/codes'] = value;
+    updates["/rooms/" + roomInfo?.data()?.codeRef + "/code"] = value;
     update(ref(rdb), updates);
     setValue(value);
-    };
-    
-    useEffect(() => {
-      if (roomInfo){ 
-        setValue(code || "");}
+  };
+
+  useEffect(() => {
+    if (roomInfo) {
+      setValue(code || "");
+    }
   }, [code]);
 
-  useEffect(() => {}, [value]);
   let codeBlockTheme = theme === "dark" ? "darkTheme" : "lightTheme";
   const monaco = useMonaco();
   useEffect(() => {
@@ -90,19 +96,41 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     });
     monaco.editor.setTheme(codeBlockTheme);
   }
+  if (roomLoading || codeLoading)
+    return (
+      <section className="h-[85vh]">
+        <Skeleton className="border pl-4 rounded-md flex justify-between items-center my-2 h-[1.75rem]"></Skeleton>
+
+        <div className="w-full h-full flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
+          <Skeleton className="w-full md:w-[70%] h-[70%] md:h-auto drop-shadow-md border-background-foreground rounded-xl overflow-y-auto"></Skeleton>
+          <Skeleton className="flex flex-col items-stretch border w-full md:w-[30%] h-[30%] md:h-auto py-2 rounded-xl overflow-scroll chatbox"></Skeleton>
+        </div>
+      </section>
+    );
+  else if (roomError || codeError || roomInfo?.data() === undefined)
+    return <div className="text-center mt-10 text-2xl">Room doesn't exist</div>;
   return (
     <section className="h-[85vh]">
-    <div className="border pl-4 rounded-md flex justify-between items-center my-2">
-      <span className="text-md font-semibold">{roomInfo?.data()?.roomName}</span>
-      <ChatRoom roomId={params.roomid} />
+      <div className="border pl-4 rounded-md flex justify-between items-center my-2">
+        <span className="text-lg font-semibold">
+          {roomInfo?.data()?.roomName}
+        </span>
+        <div>
+          <RoomMembers roomId={params.roomid} />
+          <Button onClick={handleOpen} variant={"ghost"}>
+            <ChatBubbleIcon />
+          </Button>
 
-    </div>
+        </div>
+      </div>
 
       <div className="w-full h-full flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
         <div className="w-full md:w-[70%] h-[70%] md:h-auto drop-shadow-md border-background-foreground rounded-xl overflow-y-auto">
           <Editor
             width="100%"
-            loading={<Skeleton className="w-full md:w-[70%] h-[70%] md:h-auto" />}
+            loading={
+              <Skeleton className="w-full md:w-[70%] h-[70%] md:h-auto" />
+            }
             language="javascript"
             value={value}
             onChange={(value) => handleUploadCode(value || "")}
@@ -110,7 +138,12 @@ const Page = ({ params }: { params: { roomid: string } }) => {
             options={editorOptions}
           />
         </div>
-        <Output editorRef={editorRef.current} />
+        <div className=" w-full md:w-[30%] h-[30%] md:h-auto flex flex-col gap-2">
+
+        <Output editorRef={editorRef.current} open={open}/>
+        <ChatRoom roomId={params.roomid} open={open}/>
+        </div>
+
       </div>
     </section>
   );

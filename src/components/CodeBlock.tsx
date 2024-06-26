@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
-import darkTheme from "monaco-themes/themes/Dracula.json";
+import darkTheme from "monaco-themes/themes/Blackboard.json";
 import lightTheme from "monaco-themes/themes/GitHub Light.json";
 import { editor } from "monaco-editor";
 import { Monaco } from "@monaco-editor/react";
