@@ -70,12 +70,27 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     onValue(connectedRef, (snap) => {
       if (snap.val() === true) {
         // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
-        set(presenceRef, true);
+        set(presenceRef, true).then(
+          () => {
+            onValue(ref(rdb,"rooms/" + roomInfo?.data()?.codeRef + "/members/" + user.uid), (snap) => {
+              let data ={
+                memberName: user.displayName,
+                isOnline: true,
+                memberId: user.uid,
+                isAdmin: false
+              }
+              if (snap.val().isAdmin === true ) {
+                data.isAdmin = true;
+              }
+              set(ref(rdb,"rooms/" + roomInfo?.data()?.codeRef + "/members/" + user.uid),data );
+            });
+          }
+        );
         // When I disconnect, remove this device1
         const onDisconnectRef = onDisconnect(presenceRef);
         onDisconnectRef.set(false);
       }
-    });
+    })
     return () => {
       set(presenceRef, false);
     }
