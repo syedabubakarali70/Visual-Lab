@@ -70,31 +70,39 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     memberId: user.uid,
     isAdmin: false,
   };
+
+  let isAdminPromise = new Promise(function(myResolve) {
+    // "Producing Code" (May take some time)
+    onValue(
+      ref(
+        rdb,
+        "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
+      ),
+      (snap) => {
+        if (snap.exists() && snap.val().isAdmin === true) {
+          data.isAdmin = true;
+        }
+      }
+    );
+    myResolve('');
+    });
   useEffect(() => {
     user &&
       roomInfo &&
       onValue(connectedRef, (snap) => {
         if (snap.val() === true) {
           // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
-          onValue(
-            ref(
-              rdb,
-              "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
-            ),
-            (snap) => {
-              if (snap.exists() && snap.val().isAdmin === true) {
-                data.isAdmin = true;
-              }
-            }
-          );
-          set(
-            ref(
-              rdb,
-              "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
-            ),
-            data
-          );
-          console.log("setting data", data);
+          isAdminPromise.then(function() {
+            set(
+              ref(
+                rdb,
+                "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
+              ),
+              data
+            );
+            console.log("setting data", data);
+          });
+          
           // When I disconnect, remove this device1
           const onDisconnectRef = onDisconnect(
             ref(
@@ -109,7 +117,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
           onDisconnectRef.set(false);
         }
       });
-
+const iSAdmin = () => {}
     return () => {
       data.isOnline = false;
       user &&
