@@ -12,7 +12,7 @@ const Page = () => {
   const { user, signInWithGoogle } = UserAuth();
   const q = query(collection(db, "rooms"),orderBy("createdAt","desc"));
   const [rooms, loading, error] = useCollection(q);
-  console.log(rooms);
+  
   if(!user){
       return <Button onClick={signInWithGoogle}>Sign In</Button>
   }

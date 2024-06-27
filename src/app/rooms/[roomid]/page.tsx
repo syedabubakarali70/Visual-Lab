@@ -13,8 +13,8 @@ import Output from "@/app/texteditor/Output";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { onDisconnect, onValue, ref, set, update } from "firebase/database";
 import { rdb, db } from "@/lib/firebase/clientApp";
-import { useCollection, useDocument } from "react-firebase-hooks/firestore";
-import { collection, doc } from "firebase/firestore";
+import { useDocument } from "react-firebase-hooks/firestore";
+import { doc } from "firebase/firestore";
 import RoomMembers from "@/components/RoomMembers";
 import { Button } from "@/components/ui/button";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
@@ -46,55 +46,87 @@ const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   },
 };
 const Page = ({ params }: { params: { roomid: string } }) => {
-  const {user} = UserAuth();
+  const { user } = UserAuth();
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
   const [open, setOpen] = useState(true);
   const handleOpen = () => {
     setOpen(!open);
   };
+  const roomId = params.roomid;
   const { theme, setTheme } = useTheme();
   const [roomInfo, roomLoading, roomError] = useDocument(
-    doc(db, "rooms", params.roomid)
+    doc(db, "rooms", roomId)
   );
   const [code, codeLoading, codeError] = useObjectVal(
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/code")
   ) as [any, boolean, Error];
   const [value, setValue] = useState("");
-  const presenceRef = ref(
-    rdb,
-    "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user.uid + "/isOnline"
-  );
+
   const connectedRef = ref(rdb, ".info/connected");
+  let data = {
+    memberName: user.displayName,
+    isOnline: true,
+    memberId: user.uid,
+    isAdmin: false,
+  };
   useEffect(() => {
-    onValue(connectedRef, (snap) => {
-      if (snap.val() === true) {
-        // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
-        set(presenceRef, true).then(
-          () => {
-            onValue(ref(rdb,"rooms/" + roomInfo?.data()?.codeRef + "/members/" + user.uid), (snap) => {
-              let data ={
-                memberName: user.displayName,
-                isOnline: true,
-                memberId: user.uid,
-                isAdmin: false
-              }
-              if (snap.val().isAdmin === true ) {
+    user &&
+      roomInfo &&
+      onValue(connectedRef, (snap) => {
+        if (snap.val() === true) {
+          // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
+          onValue(
+            ref(
+              rdb,
+              "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
+            ),
+            (snap) => {
+              if (snap.exists() && snap.val().isAdmin === true) {
                 data.isAdmin = true;
               }
-              set(ref(rdb,"rooms/" + roomInfo?.data()?.codeRef + "/members/" + user.uid),data );
-            });
-          }
-        );
-        // When I disconnect, remove this device1
-        const onDisconnectRef = onDisconnect(presenceRef);
-        onDisconnectRef.set(false);
-      }
-    })
+            }
+          );
+          set(
+            ref(
+              rdb,
+              "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
+            ),
+            data
+          );
+          console.log("setting data", data);
+          // When I disconnect, remove this device1
+          const onDisconnectRef = onDisconnect(
+            ref(
+              rdb,
+              "rooms/" +
+                roomInfo?.data()?.codeRef +
+                "/members/" +
+                user?.uid +
+                "/isOnline"
+            )
+          );
+          onDisconnectRef.set(false);
+        }
+      });
+
     return () => {
-      set(presenceRef, false);
-    }
-  });
+      data.isOnline = false;
+      user &&
+        roomInfo &&
+        update(
+          ref(
+            rdb,
+            "rooms/" +
+              roomInfo?.data()?.codeRef +
+              "/members/" +
+              user?.uid 
+          ),
+          data
+        );
+      console.log("User is offline");
+    };
+  }, [user, roomInfo]);
 
   const handleUploadCode = (value: string) => {
     const updates: { [key: string]: any } = {};
@@ -147,6 +179,8 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     );
   else if (roomError || codeError || roomInfo?.data() === undefined)
     return <div className="text-center mt-10 text-2xl">Room doesn't exist</div>;
+  else if (!user)
+    return <div className="text-center mt-10 text-2xl">Please sign in</div>;
   return (
     <section className="h-[85vh]">
       <div className="border pl-4 rounded-md flex justify-between items-center my-2">
