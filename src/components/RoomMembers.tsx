@@ -27,7 +27,9 @@ const RoomMembers = ({ roomId }: { roomId: string }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost"><PersonIcon/></Button>
+        <Button variant="ghost">
+          <PersonIcon />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -35,9 +37,13 @@ const RoomMembers = ({ roomId }: { roomId: string }) => {
         </DialogHeader>
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
-            {!membersLoading && Object.entries(members).map(([key, value]: [string, any]) => (
-              <div key={key}>{value.memberName}</div>
-            ))}
+            {!membersLoading &&
+              Object.entries(members).map(([key, value]: [string, any]) => (
+                <div key={key} className="flex justify-between">
+                  {value.isOnline && <div>{value.memberName}</div>}
+                  {value.isAdmin && <div key={key} className="text-sm text-slate-700 font-semibold">Admin</div>}
+                </div>
+              ))}
           </div>
         </div>
         <DialogFooter className="sm:justify-start">

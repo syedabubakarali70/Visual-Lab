@@ -36,7 +36,7 @@ const bubbleSort = (
       backgroundColor: "hsla(142.1, 76.2% ,36.3%, 0.6)",
     });
     timeline.set("#line3", {
-      delay: 0.5,
+      delay: 0.5, 
       backgroundColor: "transparent",
     });
     timeline.to("#line4", {

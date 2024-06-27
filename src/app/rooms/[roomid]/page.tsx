@@ -11,13 +11,14 @@ import darkTheme from "monaco-themes/themes/Blackboard.json";
 import lightTheme from "monaco-themes/themes/GitHub.json";
 import Output from "@/app/texteditor/Output";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { ref, update } from "firebase/database";
+import { onDisconnect, onValue, ref, set, update } from "firebase/database";
 import { rdb, db } from "@/lib/firebase/clientApp";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { collection, doc } from "firebase/firestore";
 import RoomMembers from "@/components/RoomMembers";
 import { Button } from "@/components/ui/button";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import { UserAuth } from "@/app/context/AuthContext";
 const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   fontSize: 14,
   minimap: {
@@ -45,10 +46,13 @@ const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   },
 };
 const Page = ({ params }: { params: { roomid: string } }) => {
+  const {user} = UserAuth();
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
   const [open, setOpen] = useState(true);
-  const handleOpen = () => {setOpen(!open)};
+  const handleOpen = () => {
+    setOpen(!open);
+  };
   const { theme, setTheme } = useTheme();
   const [roomInfo, roomLoading, roomError] = useDocument(
     doc(db, "rooms", params.roomid)
@@ -57,6 +61,25 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/code")
   ) as [any, boolean, Error];
   const [value, setValue] = useState("");
+  const presenceRef = ref(
+    rdb,
+    "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user.uid + "/isOnline"
+  );
+  const connectedRef = ref(rdb, ".info/connected");
+  useEffect(() => {
+    onValue(connectedRef, (snap) => {
+      if (snap.val() === true) {
+        // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
+        set(presenceRef, true);
+        // When I disconnect, remove this device1
+        const onDisconnectRef = onDisconnect(presenceRef);
+        onDisconnectRef.set(false);
+      }
+    });
+    return () => {
+      set(presenceRef, false);
+    }
+  });
 
   const handleUploadCode = (value: string) => {
     const updates: { [key: string]: any } = {};
@@ -120,7 +143,6 @@ const Page = ({ params }: { params: { roomid: string } }) => {
           <Button onClick={handleOpen} variant={"ghost"}>
             <ChatBubbleIcon />
           </Button>
-
         </div>
       </div>
 
@@ -139,11 +161,9 @@ const Page = ({ params }: { params: { roomid: string } }) => {
           />
         </div>
         <div className=" w-full md:w-[30%] h-[30%] md:h-auto flex flex-col gap-2">
-
-        <Output editorRef={editorRef.current} open={open}/>
-        <ChatRoom roomId={params.roomid} open={open}/>
+          <Output editorRef={editorRef.current} open={open} />
+          <ChatRoom roomId={params.roomid} open={open} />
         </div>
-
       </div>
     </section>
   );
