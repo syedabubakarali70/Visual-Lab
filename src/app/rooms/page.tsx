@@ -25,7 +25,7 @@ const Page = () => {
         <Input type="email" placeholder="Search Room" />
         <CreateRoomModal />
       </div>
-      {rooms?.docs.map((room) => <RoomListItem room={room}/>)}
+      {rooms?.docs.map((room) => <RoomListItem key={room.data().codeRef} room={room}/>)}
     </section>
   );
 };
