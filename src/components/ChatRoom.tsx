@@ -13,8 +13,7 @@ import { UserAuth } from "@/app/context/AuthContext";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useRef, useState } from "react";
-import { ChatBubbleIcon } from "@radix-ui/react-icons";
-const ChatRoom = ({ roomId, open }: { roomId: string; open: boolean }) => {
+const ChatRoom = ({ roomId, open,disabled }: { roomId: string; open: boolean,disabled:boolean }) => {
   const { user } = UserAuth();
   const dummy = useRef<HTMLDivElement>(null);
   const inputRef = useRef<any>(null);
@@ -42,7 +41,7 @@ const ChatRoom = ({ roomId, open }: { roomId: string; open: boolean }) => {
       className={`w-[95%]  h-96 mx-auto md:w-full bottom-4 md:m-0 md:h-[58%]  flex-col justify-between bg-background chatbox ${open ? "fixed md:static md:flex" : "hidden"}`}
     >
       <div
-        className={`w-full h-full border-2 rounded-md p-2 flex flex-col justify-between bg-background chatbox`}
+        className={`w-full h-full border rounded-md p-2 flex flex-col justify-between bg-background chatbox`}
       >
         <div className="overflow-y-scroll chatbox">
           {messages?.docs.map((message) => (
@@ -60,6 +59,7 @@ const ChatRoom = ({ roomId, open }: { roomId: string; open: boolean }) => {
             type="text"
             ref={inputRef}
             placeholder={sendMessage}
+            disabled={disabled}
             onChange={(e) => setSendMessage(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -67,7 +67,7 @@ const ChatRoom = ({ roomId, open }: { roomId: string; open: boolean }) => {
               }
             }}
           />
-          <Button type="submit" onClick={handleSendMessage}>
+          <Button type="submit" onClick={handleSendMessage} disabled={disabled}>
             Send
           </Button>
         </div>

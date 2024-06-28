@@ -25,35 +25,10 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
 import RoomMembers from "@/components/RoomMembers";
 import { Button } from "@/components/ui/button";
-import { ChatBubbleIcon, ClipboardCopyIcon, CopyIcon } from "@radix-ui/react-icons";
+import { ChatBubbleIcon, CopyIcon } from "@radix-ui/react-icons";
 import { UserAuth } from "@/app/context/AuthContext";
 import { toast } from "sonner";
-const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
-  fontSize: 14,
-  minimap: {
-    enabled: false,
-  },
-  scrollBeyondLastLine: true,
-  cursorBlinking: "expand",
-  renderLineHighlight: "none",
-  smoothScrolling: true,
-  lineNumbersMinChars: 3,
-  lineDecorationsWidth: 4,
-  padding: {
-    top: 16,
-    bottom: 16,
-  },
-  scrollbar: {
-    useShadows: false,
-    verticalHasArrows: true,
-    horizontalHasArrows: true,
-    // vertical: "hidden",
-    // horizontal: "hidden",
-    verticalScrollbarSize: 0,
-    horizontalScrollbarSize: 17,
-    alwaysConsumeMouseWheel: false,
-  },
-};
+
 const Page = ({ params }: { params: { roomid: string } }) => {
   const { user } = UserAuth();
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -70,10 +45,45 @@ const Page = ({ params }: { params: { roomid: string } }) => {
   );
   const [typing, typingLoading, typingError] = useObjectVal(
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/typing")
-  ) as [any, boolean, Error];
+  ) as [string, boolean, Error];
   const [code, codeLoading, codeError] = useObjectVal(
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/code")
   ) as [any, boolean, Error];
+  const [canCode, canCodeLoading, canCodeError] = useObjectVal(
+    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user?.uid+ "/canCode")
+  ) as [boolean, boolean, Error];
+  const [canChat, canChatLoading, canChatError] = useObjectVal(
+    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user?.uid+ "/canChat")
+  ) as [boolean, boolean, Error];
+
+  const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
+    fontSize: 14,
+    minimap: {
+      enabled: false,
+    },
+    scrollBeyondLastLine: true,
+    readOnly: !canCode,
+    cursorBlinking: "expand",
+    renderLineHighlight: "none",
+    smoothScrolling: true,
+    lineNumbersMinChars: 3,
+    lineDecorationsWidth: 4,
+    padding: {
+      top: 16,
+      bottom: 16,
+    },
+    scrollbar: {
+      useShadows: false,
+      verticalHasArrows: true,
+      horizontalHasArrows: true,
+      // vertical: "hidden",
+      // horizontal: "hidden",
+      verticalScrollbarSize: 0,
+      horizontalScrollbarSize: 17,
+      alwaysConsumeMouseWheel: false,
+    },
+  };
+
   const [value, setValue] = useState("");
 
   const connectedRef = ref(rdb, ".info/connected");
@@ -88,6 +98,8 @@ const Page = ({ params }: { params: { roomid: string } }) => {
           isOnline: true,
           memberId: user.uid,
           isAdmin: false,
+          canChat: true,
+          canCode: true,
         };
         if (snap.val() === true) {
           // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
@@ -177,11 +189,11 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     }
   }, [value]);
 
-  useEffect(() => {
-    if (roomInfo && user) {
-      setValue(code || "");
-    }
-  }, [code]);
+  // useEffect(() => {
+  //   if (roomInfo && user) {
+  //     setValue(code || "");
+  //   }
+  // }, [code]);
 
   let codeBlockTheme = theme === "dark" ? "darkTheme" : "lightTheme";
   const monaco = useMonaco();
@@ -246,7 +258,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
       </div>
 
       <div className="w-full h-full flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
-        <div className="w-full md:w-[70%] h-[70%] md:h-auto flex flex-col  border-2 rounded-md items-stretch">
+        <div className="w-full md:w-[70%] h-[70%] md:h-auto flex flex-col border rounded-md items-stretch">
           <div className="w-full flex justify-between items-center pl-4 border-bottom-2">
             <span className="text-sm flex items-center">
               {" "}
@@ -283,7 +295,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
               <Skeleton className="w-full md:w-[70%] h-[70%] md:h-auto" />
             }
             language="javascript"
-            value={value}
+            value={code}
             onChange={(value) => handleUploadCode(value || "")}
             onMount={handleEditorDidMount}
             options={editorOptions}
@@ -291,7 +303,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
         </div>
         <div className=" w-full md:w-[30%] h-[30%] md:h-auto flex flex-col gap-2">
           <Output editorRef={editorRef.current} open={open} />
-          <ChatRoom roomId={params.roomid} open={open} />
+          <ChatRoom roomId={params.roomid} open={open} disabled={!canChat}/>
         </div>
       </div>
     </section>

@@ -17,10 +17,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { UserAuth } from "@/app/context/AuthContext";
 const RoomMembers = ({ roomId }: { roomId: string }) => {
+  const { user } = UserAuth();
   const [roomInfo, roomLoading, roomError] = useDocument(
     doc(db, "rooms", roomId)
   );
+  const [isUserAdmin, isUserAdminLoading, isUserAdminError] = useObjectVal(
+    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user.uid+ "/isAdmin")
+  ) as [boolean, boolean, Error];
   const [members, membersLoading, membersError] = useObjectVal(
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/members")
   ) as [any, boolean, Error];
@@ -40,7 +45,7 @@ const RoomMembers = ({ roomId }: { roomId: string }) => {
           <div className="grid flex-1 gap-2">
             {!membersLoading &&
               Object.entries(members).map(([key, value]: [string, any]) => (
-                <Member key={key} value={value} />
+                <Member key={key} value={value} isUserAdmin={isUserAdmin} roomId={roomInfo?.data()?.codeRef}/>
               ))}
           </div>
         </div>
