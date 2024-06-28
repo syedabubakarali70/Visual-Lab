@@ -55,6 +55,9 @@ const Page = ({ params }: { params: { roomid: string } }) => {
   const [canChat, canChatLoading, canChatError] = useObjectVal(
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user?.uid+ "/canChat")
   ) as [boolean, boolean, Error];
+  const [isAdmin, isAdminLoading, isAdminError] = useObjectVal(
+    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user?.uid+ "/isAdmin")
+  ) as [boolean, boolean, Error];
 
   const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
     fontSize: 14,
@@ -62,7 +65,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
       enabled: false,
     },
     scrollBeyondLastLine: true,
-    readOnly: !canCode,
+    ...({readOnly: !isAdmin &&!canCode}),
     cursorBlinking: "expand",
     renderLineHighlight: "none",
     smoothScrolling: true,
@@ -303,7 +306,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
         </div>
         <div className=" w-full md:w-[30%] h-[30%] md:h-auto flex flex-col gap-2">
           <Output editorRef={editorRef.current} open={open} />
-          <ChatRoom roomId={params.roomid} open={open} disabled={!canChat}/>
+          <ChatRoom roomId={params.roomid} open={open} disabled={!isAdmin &&!canChat }/>
         </div>
       </div>
     </section>

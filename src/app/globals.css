@@ -59,15 +59,15 @@
     @apply bg-background text-foreground;
   }
 }
-/* @layer components {
+@layer components {
   .line {
-    @apply px-4 py-1;
+    @apply pr-4 ;
   }
   .codeBlock{
     @apply pl-4;
   
   }
-} */
+}
 
 .chatbox {
   -ms-overflow-style: none; /* for Internet Explorer, Edge */

@@ -12,6 +12,11 @@ import mergeSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/m
 import quickSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/quicksort/quickSortAnimation";
 import insertionSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/insertionsort/insertionSortAnimation";
 import selectionSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/selectionsort/selectionSortAnimation";
+import MergeSort from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/mergesort/page";
+import MergeSortPseudoCode from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/mergesort/MergeSortPseudoCode";
+import QuickSortPseudoCode from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/quicksort/QuickSortPseudoCode";
+import InsertionSortPseudoCode from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/insertionsort/InsertionSortPseudoCode";
+import SelectionSortPseudoCode from "@/app/dsa/(dsa topics)/(dsa topic page)/(sorting algos)/selectionsort/SelectionSortPseudoCode";
 
 gsap.registerPlugin(Flip);
 type AnimationProps = {
@@ -37,6 +42,19 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
       return insertionSort;
     } else if (Animation === "Selection Sort") {
       return selectionSort;
+    }
+  };
+  const getPseudoCode = (Animation: string) => {
+    if (Animation === "Bubble Sort") {
+      return <BubbleSortPseudoCode />;
+    } else if (Animation === "Merge Sort") {
+      return <MergeSortPseudoCode />;
+    } else if (Animation === "Quick Sort") {
+      return <QuickSortPseudoCode />;
+    } else if (Animation === "Insertion Sort") {
+      return <InsertionSortPseudoCode />;
+    } else if (Animation === "Selection Sort") {
+      return <SelectionSortPseudoCode />;
     }
   };
 
@@ -69,8 +87,8 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
         </div> */}
       <div className="flex justify-between items-end">
         <NumbersInputField setNumList={setNumList} />
-        <div className="flex justify-between border-2 border-primary/70 rounded-md  py-2 px-4">
-          <BubbleSortPseudoCode />
+        <div className="flex justify-between border-2 border-primary/70 rounded-md  py-2">
+          {getPseudoCode(Animation)}
         </div>
       </div>
       <AnimationControls
