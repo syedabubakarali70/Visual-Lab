@@ -41,7 +41,7 @@ const RoomMembers = ({ roomId }: { roomId: string }) => {
               Object.entries(members).map(([key, value]: [string, any]) => (
                 <div key={key} className="flex justify-between">
                   {value.isOnline && <div>{value.memberName}</div>}
-                  {value.isOnline && value.isAdmin && <div key={key} className="text-sm text-slate-700 font-semibold">Admin</div>}
+                  {value.isOnline && value.isAdmin && <div className="text-sm text-slate-700 font-semibold">Admin</div>}
                 </div>
               ))}
           </div>

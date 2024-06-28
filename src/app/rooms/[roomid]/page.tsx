@@ -11,7 +11,15 @@ import darkTheme from "monaco-themes/themes/Blackboard.json";
 import lightTheme from "monaco-themes/themes/GitHub.json";
 import Output from "@/app/texteditor/Output";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { onDisconnect, onValue, ref, set, update } from "firebase/database";
+import {
+  child,
+  get,
+  onDisconnect,
+  onValue,
+  ref,
+  set,
+  update,
+} from "firebase/database";
 import { rdb, db } from "@/lib/firebase/clientApp";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
@@ -71,38 +79,46 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     isAdmin: false,
   };
 
-  let isAdminPromise = new Promise(function(myResolve) {
-    // "Producing Code" (May take some time)
-    onValue(
-      ref(
-        rdb,
-        "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
-      ),
-      (snap) => {
-        if (snap.exists() && snap.val().isAdmin === true) {
-          data.isAdmin = true;
-        }
-      }
-    );
-    myResolve('');
-    });
   useEffect(() => {
     user &&
       roomInfo &&
       onValue(connectedRef, (snap) => {
         if (snap.val() === true) {
           // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
-          isAdminPromise.then(function() {
-            set(
-              ref(
-                rdb,
+
+          roomInfo &&
+            get(
+              child(
+                ref(rdb),
                 "rooms/" + roomInfo?.data()?.codeRef + "/members/" + user?.uid
-              ),
-              data
-            );
-            console.log("setting data", data);
-          });
-          
+              )
+            ).then((snap) => {
+              if (snap.exists()) {
+                set(
+                  ref(
+                    rdb,
+                    "rooms/" +
+                      roomInfo?.data()?.codeRef +
+                      "/members/" +
+                      user?.uid +
+                      "/isOnline"
+                  ),
+                  true
+                );
+              } else {
+                update(
+                  ref(
+                    rdb,
+                    "rooms/" +
+                      roomInfo?.data()?.codeRef +
+                      "/members/" +
+                      user?.uid
+                  ),
+                  data
+                );
+              }
+            });
+
           // When I disconnect, remove this device1
           const onDisconnectRef = onDisconnect(
             ref(
@@ -117,22 +133,20 @@ const Page = ({ params }: { params: { roomid: string } }) => {
           onDisconnectRef.set(false);
         }
       });
-const iSAdmin = () => {}
     return () => {
-      data.isOnline = false;
       user &&
         roomInfo &&
-        update(
+        set(
           ref(
             rdb,
             "rooms/" +
               roomInfo?.data()?.codeRef +
               "/members/" +
-              user?.uid 
+              user?.uid +
+              "/isOnline"
           ),
-          data
+          false
         );
-      console.log("User is offline");
     };
   }, [user, roomInfo]);
 
