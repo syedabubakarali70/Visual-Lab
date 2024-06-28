@@ -35,7 +35,7 @@ export default function CreateRoomModal() {
       code: "",
       hostId: user.uid,
       hostName: user.displayName,
-
+      typing:"",
     };
 
     // First update: Create the room

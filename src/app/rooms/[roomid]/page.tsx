@@ -25,8 +25,9 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
 import RoomMembers from "@/components/RoomMembers";
 import { Button } from "@/components/ui/button";
-import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import { ChatBubbleIcon, ClipboardCopyIcon, CopyIcon } from "@radix-ui/react-icons";
 import { UserAuth } from "@/app/context/AuthContext";
+import { toast } from "sonner";
 const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   fontSize: 14,
   minimap: {
@@ -58,31 +59,36 @@ const Page = ({ params }: { params: { roomid: string } }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
   const [open, setOpen] = useState(true);
+  const roomId = params.roomid;
+
   const handleOpen = () => {
     setOpen(!open);
   };
-  const roomId = params.roomid;
   const { theme, setTheme } = useTheme();
   const [roomInfo, roomLoading, roomError] = useDocument(
     doc(db, "rooms", roomId)
   );
+  const [typing, typingLoading, typingError] = useObjectVal(
+    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/typing")
+  ) as [any, boolean, Error];
   const [code, codeLoading, codeError] = useObjectVal(
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/code")
   ) as [any, boolean, Error];
   const [value, setValue] = useState("");
 
   const connectedRef = ref(rdb, ".info/connected");
-  let data = {
-    memberName: user.displayName,
-    isOnline: true,
-    memberId: user.uid,
-    isAdmin: false,
-  };
+ 
 
   useEffect(() => {
     user &&
       roomInfo &&
       onValue(connectedRef, (snap) => {
+        let data = {
+          memberName: user.displayName,
+          isOnline: true,
+          memberId: user.uid,
+          isAdmin: false,
+        };
         if (snap.val() === true) {
           // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
 
@@ -158,7 +164,21 @@ const Page = ({ params }: { params: { roomid: string } }) => {
   };
 
   useEffect(() => {
-    if (roomInfo) {
+    const updates: { [key: string]: any } = {};
+    if (roomInfo && user) {
+      updates["/rooms/" + roomInfo?.data()?.codeRef + "/typing"] =
+        user.displayName;
+      update(ref(rdb), updates);
+      const timeout = setTimeout(() => {
+        updates["/rooms/" + roomInfo?.data()?.codeRef + "/typing"] = "";
+        update(ref(rdb), updates);
+      }, 2000);
+      return () => clearInterval(timeout);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (roomInfo && user) {
       setValue(code || "");
     }
   }, [code]);
@@ -170,6 +190,14 @@ const Page = ({ params }: { params: { roomid: string } }) => {
       monaco.editor.setTheme(codeBlockTheme);
     }
   }, [theme]);
+
+  async function copyContent() {
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  }
 
   function handleEditorDidMount(
     editor: editor.IStandaloneCodeEditor,
@@ -218,7 +246,37 @@ const Page = ({ params }: { params: { roomid: string } }) => {
       </div>
 
       <div className="w-full h-full flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
-        <div className="w-full md:w-[70%] h-[70%] md:h-auto drop-shadow-md border-background-foreground rounded-xl overflow-y-auto">
+        <div className="w-full md:w-[70%] h-[70%] md:h-auto flex flex-col  border-2 rounded-md items-stretch">
+          <div className="w-full flex justify-between items-center pl-4 border-bottom-2">
+            <span className="text-sm flex items-center">
+              {" "}
+              {typing ? (
+          <div className="flex items-center space-x-2">
+            <span>{typing} is typing</span>
+            <div className="flex space-x-1 items-end">
+              <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse"></div>
+              <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse delay-200"></div>
+              <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse delay-400"></div>
+            </div>
+          </div>
+        ) : (
+          <span>Text Editor</span>
+        )}
+            </span>
+            <div className="flex justify-center items-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                copyContent();
+                toast("Code copied to clipboard");
+              }}
+              className="hover:bg-primary/10"
+            >
+              <CopyIcon className="h-4 w-4" />
+            </Button>
+          </div>
+          </div>
           <Editor
             width="100%"
             loading={

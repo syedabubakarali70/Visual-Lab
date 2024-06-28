@@ -64,8 +64,6 @@ const CodeBlock = ({ code }: { code: object }) => {
     localStorage.setItem("fileType", selectedFile);
   }, [selectedFile]);
 
-  console.log("render");
-
   async function copyContent() {
     try {
       await navigator.clipboard.writeText(
@@ -100,7 +98,7 @@ const CodeBlock = ({ code }: { code: object }) => {
           </div>
           <div className="flex justify-center items-center mr-2">
             <Button
-              variant="link"
+              variant="ghost"
               size="sm"
               onClick={() => {
                 copyContent();
