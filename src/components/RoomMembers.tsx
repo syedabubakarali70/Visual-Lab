@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { rdb, db } from "@/lib/firebase/clientApp";
 import { ref } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
@@ -6,6 +5,8 @@ import { doc } from "firebase/firestore";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { Button } from "@/components/ui/button";
 import { PersonIcon } from "@radix-ui/react-icons";
+import Member from "@/components/Member";
+
 import {
   Dialog,
   DialogClose,
@@ -39,10 +40,7 @@ const RoomMembers = ({ roomId }: { roomId: string }) => {
           <div className="grid flex-1 gap-2">
             {!membersLoading &&
               Object.entries(members).map(([key, value]: [string, any]) => (
-                <div key={key} className="flex justify-between">
-                  {value.isOnline && <div>{value.memberName}</div>}
-                  {value.isOnline && value.isAdmin && <div className="text-sm text-slate-700 font-semibold">Admin</div>}
-                </div>
+                <Member key={key} value={value} />
               ))}
           </div>
         </div>

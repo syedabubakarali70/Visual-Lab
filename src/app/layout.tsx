@@ -11,6 +11,7 @@ import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
 import { AuthContextProvider } from "./context/AuthContext";
 import Image from "next/image";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Visual Lab",
