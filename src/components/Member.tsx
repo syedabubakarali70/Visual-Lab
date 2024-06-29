@@ -35,10 +35,7 @@ const Member = ({
       set(
         ref(rdb, "rooms/" + roomId + "/members/" + value.memberId  + "/isAdmin"),
         isAdmin
-      ).then(() => {
-        console.log("Admin status updated",user);
-        console.log("romid", roomId);
-      });
+      )
     }
     if (canChat !== value.canChat) {
       set(
