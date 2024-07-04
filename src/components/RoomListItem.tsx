@@ -155,7 +155,7 @@ const RoomListItem = ({ room }: { room: any }) => {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto ">
-                      <Button variant="destructive" className="flex- gap-2">
+                      <Button variant="destructive" className="flex- gap-2" onClick={e=>e.stopPropagation()}>
                       <TrashIcon className=""/> 
                       <span>Delete room</span>
                       </Button>
