@@ -1,9 +1,10 @@
 "use client";
-import { rdb } from "@/lib/firebase/clientApp";
+import { rdb, db } from "@/lib/firebase/clientApp";
 import { ref } from "firebase/database";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useObjectVal } from "react-firebase-hooks/database";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogClose,
@@ -20,6 +21,8 @@ import { Label } from "./ui/label";
 import { useRouter } from "next/navigation";
 import { UserAuth } from "@/app/context/AuthContext";
 import { DotsHorizontalIcon, TrashIcon } from "@radix-ui/react-icons";
+import { doc, deleteDoc } from "firebase/firestore";
+import { remove } from "firebase/database";
 import {
   Popover,
   PopoverContent,
@@ -51,12 +54,10 @@ const RoomListItem = ({ room }: { room: any }) => {
   useEffect(() => {
     setJoined(0);
     for (let member in members) {
-      console.log(members[member]);
       if (members[member].isOnline) {
         setJoined((prev) => prev + 1);
       }
     }
-    console.log(joined);
   }, [members]);
   const checkPassword = () => {
     if (password === room.data().password) {
@@ -65,67 +66,29 @@ const RoomListItem = ({ room }: { room: any }) => {
       console.log("password incorrect");
     }
   };
-  if (room.data().public === true) {
-    return (
-      <Link
-        href={`/rooms/${room.id}`}
-        key={room.id}
-        className="block bg-secondary/50 rounded-lg p-4 my-2 w-full"
-      >
-        <div className="flex justify-between items-center">
-          <div>
-            <div className="flex items-center space-x-2">
-              <div className="bg-secondary rounded-full w-10 h-10 flex items-center justify-center border-2">
-                <span>{room.data().hostName[0]}</span>
-              </div>
-              <div>{room.data().hostName}</div>
-            </div>
-            <div className="text-xl font-semibold mt-2">
-              {room.data().roomName}
-            </div>
-          </div>
-          {room.data().createdAt && (
-            <div>
-              <div className="text-sm text-secondary-foreground">
-                Created At:
-              </div>
-
-              <div className="text-sm text-secondary-foreground flex justify-end">
-                {room.data().createdAt?.toDate().getDate() < 10
-                  ? "0" + room.data().createdAt?.toDate().getDate()
-                  : room.data().createdAt?.toDate().getDate()}
-                &nbsp;
-                {months[room.data().createdAt.toDate().getMonth()]},
-                {room.data().createdAt.toDate().getFullYear()}
-              </div>
-              <div className="text-sm text-secondary-foreground flex justify-end">
-                {room.data().createdAt.toDate().getHours() < 10
-                  ? "0" + room.data().createdAt.toDate().getHours()
-                  : room.data().createdAt.toDate().getHours()}
-                :
-                {room.data().createdAt.toDate().getMinutes() < 10
-                  ? "0" + room.data().createdAt.toDate().getMinutes()
-                  : room.data().createdAt.toDate().getMinutes()}
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="flex items-center mt-4">
-          <div className="flex items-center gap-2 text-warning">
-            <span className="text-sm">{joined} Joined</span>
-          </div>
-          <button className="ml-auto bg-secondary rounded-full px-4 py-2">
-            {room.data().public === true ? "Public" : "Private"}
-          </button>
-        </div>
-      </Link>
-    );
-  } else {
-    return (
-      <Dialog>
-        <DialogTrigger
-          className="block bg-secondary/50 rounded-lg p-4 my-2 w-full"
-          key={room.id}
+  const deleteRoom = async () => {
+    await deleteDoc(doc(db, "rooms", room.id))
+      .then(() => {
+        remove(ref(rdb, "rooms/" + room.data().codeRef));
+        toast.success("Room deleted", {
+          description: room.data().roomName + " has been deleted successfully",
+        });
+      })
+      .catch((error) => {
+        toast.error("Error deleting room", { description: error.message });
+      });
+  };
+  const enterRoom = () => {
+    if(room.data().public){
+      router.push(`/rooms/${room.id}`)
+    }
+  }
+  return (
+    <Dialog>
+      <DialogTrigger key={room.id} asChild>
+        <div
+          className="block bg-secondary/50 rounded-lg p-4 my-2 w-full hover:cursor-pointer"
+          onClick={enterRoom}
         >
           <div className="flex justify-between items-center">
             <div>
@@ -135,7 +98,7 @@ const RoomListItem = ({ room }: { room: any }) => {
                 </div>
                 <div>{room.data().hostName}</div>
               </div>
-              <div className="text-xl font-semibold mt-2">
+              <div className="text-xl font-semibold mt-2 text-left">
                 {room.data().roomName}
               </div>
             </div>
@@ -154,10 +117,17 @@ const RoomListItem = ({ room }: { room: any }) => {
                         <DotsHorizontalIcon />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto ">
-                      <Button variant="destructive" className="flex- gap-2" onClick={e=>e.stopPropagation()}>
-                      <TrashIcon className=""/> 
-                      <span>Delete room</span>
+                    <PopoverContent className="w-auto " asChild>
+                      <Button
+                        variant="destructive"
+                        className="flex gap-2 text-red-500 hover:text-white"
+                        onClick={(e) => {
+                          deleteRoom();
+                          e.stopPropagation();
+                        }}
+                      >
+                        <TrashIcon />
+                        <span>Delete room</span>
                       </Button>
                     </PopoverContent>
                   </Popover>
@@ -194,7 +164,9 @@ const RoomListItem = ({ room }: { room: any }) => {
               {room.data().public === true ? "Public" : "Private"}
             </button>
           </div>
-        </DialogTrigger>
+        </div>
+      </DialogTrigger>
+      {room.data().public === false && (
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Enter Password</DialogTitle>
@@ -225,9 +197,10 @@ const RoomListItem = ({ room }: { room: any }) => {
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
-    );
-  }
+      )}
+    </Dialog>
+  );
 };
+// };
 
 export default RoomListItem;

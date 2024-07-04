@@ -50,13 +50,34 @@ const Page = ({ params }: { params: { roomid: string } }) => {
     ref(rdb, "rooms/" + roomInfo?.data()?.codeRef + "/code")
   ) as [any, boolean, Error];
   const [canCode, canCodeLoading, canCodeError] = useObjectVal(
-    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user?.uid+ "/canCode")
+    ref(
+      rdb,
+      "rooms/" +
+        roomInfo?.data()?.codeRef +
+        "/members/" +
+        user?.uid +
+        "/canCode"
+    )
   ) as [boolean, boolean, Error];
   const [canChat, canChatLoading, canChatError] = useObjectVal(
-    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user?.uid+ "/canChat")
+    ref(
+      rdb,
+      "rooms/" +
+        roomInfo?.data()?.codeRef +
+        "/members/" +
+        user?.uid +
+        "/canChat"
+    )
   ) as [boolean, boolean, Error];
   const [isAdmin, isAdminLoading, isAdminError] = useObjectVal(
-    ref(rdb, "rooms/" + roomInfo?.data()?.codeRef +"/members/"+user?.uid+ "/isAdmin")
+    ref(
+      rdb,
+      "rooms/" +
+        roomInfo?.data()?.codeRef +
+        "/members/" +
+        user?.uid +
+        "/isAdmin"
+    )
   ) as [boolean, boolean, Error];
 
   const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
@@ -65,7 +86,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
       enabled: false,
     },
     scrollBeyondLastLine: true,
-    ...({readOnly: !isAdmin &&!canCode}),
+    ...{ readOnly: !isAdmin && !canCode },
     cursorBlinking: "expand",
     renderLineHighlight: "none",
     smoothScrolling: true,
@@ -90,7 +111,6 @@ const Page = ({ params }: { params: { roomid: string } }) => {
   const [value, setValue] = useState("");
 
   const connectedRef = ref(rdb, ".info/connected");
- 
 
   useEffect(() => {
     user &&
@@ -242,12 +262,15 @@ const Page = ({ params }: { params: { roomid: string } }) => {
         </div>
       </section>
     );
-  else if (roomError || codeError || roomInfo?.data() === undefined)
-    return <div className="text-center mt-10 text-2xl">Room doesn't exist</div>;
   else if (!user)
     return <div className="text-center mt-10 text-2xl">Please sign in</div>;
-  return (
-    <section className="h-[85vh]">
+  else {
+    if (roomError || codeError || roomInfo?.data() === undefined)
+      return (
+        <div className="text-center mt-10 text-2xl">Room doesn't exist</div>
+      );
+      return (
+        <section className="h-[85vh]">
       <div className="border pl-4 rounded-md flex justify-between items-center my-2">
         <span className="text-lg font-semibold">
           {roomInfo?.data()?.roomName}
@@ -266,31 +289,31 @@ const Page = ({ params }: { params: { roomid: string } }) => {
             <span className="text-sm flex items-center">
               {" "}
               {typing ? (
-          <div className="flex items-center space-x-2">
-            <span>{typing} is typing</span>
-            <div className="flex space-x-1 items-end">
-              <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse"></div>
-              <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse delay-200"></div>
-              <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse delay-400"></div>
-            </div>
-          </div>
-        ) : (
-          <span>Text Editor</span>
-        )}
+                <div className="flex items-center space-x-2">
+                  <span>{typing} is typing</span>
+                  <div className="flex space-x-1 items-end">
+                    <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse"></div>
+                    <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse delay-200"></div>
+                    <div className="w-1 h-1 bg-gray-500 rounded-full animate-pulse delay-400"></div>
+                  </div>
+                </div>
+              ) : (
+                <span>Text Editor</span>
+              )}
             </span>
             <div className="flex justify-center items-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                copyContent();
-                toast("Code copied to clipboard");
-              }}
-              className="hover:bg-primary/10"
-            >
-              <CopyIcon className="h-4 w-4" />
-            </Button>
-          </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  copyContent();
+                  toast("Code copied to clipboard");
+                }}
+                className="hover:bg-primary/10"
+              >
+                <CopyIcon className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <Editor
             width="100%"
@@ -306,11 +329,16 @@ const Page = ({ params }: { params: { roomid: string } }) => {
         </div>
         <div className=" w-full md:w-[30%] h-[30%] md:h-auto flex flex-col gap-2">
           <Output editorRef={editorRef.current} open={open} />
-          <ChatRoom roomId={params.roomid} open={open} disabled={!isAdmin &&!canChat }/>
+          <ChatRoom
+            roomId={params.roomid}
+            open={open}
+            disabled={!isAdmin && !canChat}
+          />
         </div>
       </div>
     </section>
   );
+}
 };
 
 export default Page;
