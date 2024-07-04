@@ -26,8 +26,12 @@ const Profile = () => {
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent containerDiv="nav">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+          {user && (
+            <>
+              <DropdownMenuLabel>{user.displayName}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+            </>
+          )}
           {!user ? (
             <>
               <DropdownMenuItem asChild>
@@ -39,12 +43,6 @@ const Profile = () => {
             </>
           ) : (
             <>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard">{user.displayName}</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard">Profile</Link>
-              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <li onClick={signOutUser}>Logout</li>
               </DropdownMenuItem>

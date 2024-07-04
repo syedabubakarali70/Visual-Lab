@@ -33,7 +33,7 @@ const Page = ({ params }: { params: { roomid: string } }) => {
   const { user } = UserAuth();
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const roomId = params.roomid;
 
   const handleOpen = () => {
