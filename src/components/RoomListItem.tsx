@@ -79,7 +79,7 @@ const RoomListItem = ({ room }: { room: any }) => {
       });
   };
   const enterRoom = () => {
-    if(room.data().public){
+    if(room.data().public || user.uid === room.data().hostId){
       router.push(`/rooms/${room.id}`)
     }
   }
