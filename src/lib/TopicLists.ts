@@ -19,11 +19,7 @@ export const SortingAlgoList = [
     link: "insertionsort",
     completed: false,
   },
-  {
-    name: "Counting Sort",
-    link: "countingsort",
-    completed: false,
-  },
+  
   {
     name: "Selection Sort",
     link: "selectionsort",

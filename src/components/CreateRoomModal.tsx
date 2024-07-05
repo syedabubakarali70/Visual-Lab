@@ -109,12 +109,13 @@ export default function CreateRoomModal() {
         </DialogHeader>
         <div className="flex  space-x-2 gap-2 flex-col">
           <div className="flex gap-2 flex-col my-2">
-            <Label htmlFor="room name">Room Name</Label>
+            <Label htmlFor="room_name">Room Name</Label>
             <Input
-              id="room name"
+              id="room_name"
               placeholder="Enter Room Name"
               onChange={(e) => setRoomName(e.target.value)}
               error={roomNameError}
+              required
             />
           </div>
           <RadioGroup

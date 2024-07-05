@@ -9,7 +9,7 @@ const DSA = () => {
     <>
       <section className="w-full px-3 my-4">
         <div className="text-center text-2xl my-4">Sorting Algorithms</div>
-        <div className="gap-y-2 flex flex-col md:flex-row flex-wrap justify-between w-full">
+        <div className="gap-y-2 flex flex-col md:flex-row flex-wrap gap-[5%]  w-full">
         {SortingAlgoList.map((algo, index) => (
           <TopicCard info={algo} key={index} />
         ))}
@@ -17,7 +17,7 @@ const DSA = () => {
       </section>
       <section className="w-full px-3 mb-4">
         <div className="text-center text-2xl mb-4">Data Structures</div>
-        <div className="gap-y-2 flex flex-col md:flex-row flex-wrap justify-between w-full">
+        <div className="gap-y-2 flex flex-col md:flex-row flex-wrap gap-[5%] w-full">
         {DataStructureList.map((algo, index) => (
           <TopicCard info={algo} key={index} />
         ))}

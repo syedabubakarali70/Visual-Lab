@@ -24,11 +24,9 @@ const Page = () => {
 
   useEffect(() => {
     if (rooms) {
-      setRoomsArray(
-        rooms.docs.map((room) => (room))
-      );
+      setRoomsArray(rooms.docs.map((room) => room));
     }
-  }, [rooms,user]);
+  }, [rooms, user]);
 
   if (!user) {
     return (
@@ -49,8 +47,12 @@ const Page = () => {
       {/* {rooms?.docs.map((room) => (
         <RoomListItem key={room.data().codeRef} room={room} />
       ))} */}
-      {loading && <div className="flex justify-center items-center w-full h-[40vh]"><Spinner /></div>}
-      {roomsArray?.map((room:any) => (
+      {loading && (
+        <div className="flex justify-center items-center w-full h-[40vh]">
+          <Spinner />
+        </div>
+      )}
+      {roomsArray?.map((room: any) => (
         <RoomListItem key={room.data().codeRef} room={room} />
       ))}
     </section>

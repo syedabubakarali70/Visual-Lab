@@ -40,6 +40,7 @@ const RoomMembers = ({ roomId }: { roomId: string }) => {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Room Members</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
