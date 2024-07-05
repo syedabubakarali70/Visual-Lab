@@ -1,7 +1,7 @@
 import TopicCard from "@/components/TopicCard";
 import { SortingAlgoList, DataStructureList } from "@/lib/TopicLists";
 import { Suspense } from "react";
-import Loading from "./Loading";
+// import Loading from "./Loading";
 
 const DSA = () => {
   return (
