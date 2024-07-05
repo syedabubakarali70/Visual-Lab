@@ -4,6 +4,10 @@ const width = 49.6;
 const blue = "hsla(221, 83%, 53%, 0.57)";
 const green = "hsla(142.1, 76.2% ,36.3%, 0.6)";
 const red = "hsla(0, 72.2%, 50.6%, 0.6)";
+
+const calculatex = (index: number) => {
+  return index * width;
+};
 const bubbleSort = (
   timeline: any,
   numbers: Inumbers[],
@@ -30,6 +34,9 @@ const bubbleSort = (
   const swaps = document.getElementById("swaps");
 
   let i = 0;
+  timeline.set("#i", {
+    opacity: 1,
+  });
   while (1) {
     timeline.set("#line3", {
       backgroundColor: blue,
@@ -43,7 +50,15 @@ const bubbleSort = (
         delay: 0.5,
         backgroundColor: "transparent",
       });
-      for (let j = 0; j < numbers.length - i - 1; j++) {
+      timeline.set("#j", { opacity: 1 });
+      let j = 0;
+      if (i > 0) {
+        timeline.to("#j", {
+          x: "-=" + calculatex(numbers.length - i),
+          duration: 0.5,
+        });
+      }
+      while (j < numbers.length - i - 1) {
         timeline.set("#line4", {
           backgroundColor: blue,
         });
@@ -58,11 +73,7 @@ const bubbleSort = (
         const currentRef = numbersRef.current[Number(numbers[j].index)].span;
         const nextRef = numbersRef.current[Number(numbers[j + 1].index)].span;
 
-        timeline.to([currentRef, nextRef], { y: -40, duration: 0.2 });
-        // timeline.set(swapsandComparisons, {
-        //   comparisons: swapsandComparisons.comparisons + 1,
-        //   onUpdate: () => {console.log(swapsandComparisons)},
-        // });
+        timeline.to([currentRef, nextRef], { y: +40, duration: 0.2 });
         timeline.set("#line5", {
           backgroundColor: blue,
         });
@@ -115,7 +126,11 @@ const bubbleSort = (
           delay: 0.5,
           backgroundColor: "transparent",
         });
+
+        j++;
+        timeline.to("#j", { x: "+=" + width, duration: 0.5 });
       }
+
       timeline.set("#line4", {
         delay: 0.5,
         backgroundColor: red,
@@ -124,7 +139,13 @@ const bubbleSort = (
         delay: 0.5,
         backgroundColor: "transparent",
       });
+
+      timeline.set("#j", { opacity: 0 });
       i++;
+      timeline.to("#i", {
+        x: "+=" + width,
+        duration: 0.5,
+      });
     } else break;
   }
   timeline.set("#line3", {
@@ -135,6 +156,7 @@ const bubbleSort = (
     delay: 0.5,
     backgroundColor: "transparent",
   });
+  timeline.set("#i", { opacity: 0 });
 };
 
 export default bubbleSort;

@@ -1,6 +1,6 @@
 const InsertionSortPseudoCode = () => {
     return (
-      <div>
+      <div id="codeLines">
         <div className="line pl-4" id="line1">
           {"function insertionSort(array):"}
         </div>

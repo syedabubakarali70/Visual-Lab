@@ -4,7 +4,12 @@ import { Slider } from "@/components/ui/slider";
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import useInterval from "./useInterval";
-import { PlayIcon, PauseIcon,EnterFullScreenIcon,ExitFullScreenIcon } from "@radix-ui/react-icons";
+import {
+  PlayIcon,
+  PauseIcon,
+  EnterFullScreenIcon,
+  ExitFullScreenIcon,
+} from "@radix-ui/react-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,7 +92,6 @@ const AnimationControls = ({
       )
         ? "landscape"
         : "portrait";
-      console.log(oppositeOrientation);
       (screen.orientation as any).lock(oppositeOrientation);
     } else {
       document.exitFullscreen();
@@ -117,12 +121,13 @@ const AnimationControls = ({
             }}
             className="hover:cursor-pointer"
           />
-          <div>
-            {Math.floor(properties.time[0])}/{Math.floor(tl.duration())}
-          </div>
         </div>
-        <div className="flex justify-end w-[100%]">
+        <div className="flex justify-between w-[100%]">
+            <div>
+              <span>{Math.floor(properties.time[0])}</span> / <span>{Math.floor(tl.duration())}</span>
+            </div>
           <div className="flex gap-2 grow justify-center">
+
             <Button
               variant="outline"
               onClick={() =>
@@ -169,9 +174,13 @@ const AnimationControls = ({
             </DropdownMenu>
           </div>
           <div>
-          <Button id="fullscreenButton" onClick={onfullScreen} variant={"outline"}>
-            {isFullScreen ? <ExitFullScreenIcon /> : <EnterFullScreenIcon />}
-          </Button>
+            <Button
+              id="fullscreenButton"
+              onClick={onfullScreen}
+              variant={"outline"}
+            >
+              {isFullScreen ? <ExitFullScreenIcon /> : <EnterFullScreenIcon />}
+            </Button>
           </div>
         </div>
       </div>

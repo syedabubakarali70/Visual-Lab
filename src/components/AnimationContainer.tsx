@@ -29,7 +29,7 @@ export type { AnimationProps };
 
 const AnimationContainer = ({ Animation }: { Animation: string }) => {
   const tl = gsap.timeline();
-  const [numList, setNumList, numRefs] = useCreateArray([5, 4, 3, 2, 1]);
+  const [numList, setNumList, numRefs] = useCreateArray([5, 4, 3, 2, 1],Animation);
 
   const getAnimation = (Animation: string) => {
     if (Animation === "Bubble Sort") {
@@ -71,9 +71,11 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
       <div className="text-lg py-2 border-b-4">{Animation}</div>
       <div
         id="animationContainer"
-        className=" flex justify-center items-center grow"
+        className=" flex flex-col justify-center items-center grow w-auto"
       >
+        <div id="variables" className="flex justify-start"></div>
         <div id="mainArray" className="flex"></div>
+        <div id="otherVariables" className="flex justify-start"></div>
       </div>
 
       {/* <div>

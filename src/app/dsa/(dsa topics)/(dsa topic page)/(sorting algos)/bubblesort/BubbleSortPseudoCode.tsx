@@ -1,6 +1,6 @@
 const BubbleSortPseudoCode = () => {
   return (
-    <div>
+    <div id="codeLines">
       <div id="line1" className="line pl-4">
         {"function bubbleSort(array):"}
       </div>
