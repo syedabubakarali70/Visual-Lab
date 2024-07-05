@@ -122,7 +122,7 @@ const AnimationControls = ({
             className="hover:cursor-pointer"
           />
         </div>
-        <div className="flex justify-between w-[100%]">
+        <div className="flex justify-between w-[100%] pb-2">
             <div>
               <span>{Math.floor(properties.time[0])}</span> / <span>{Math.floor(tl.duration())}</span>
             </div>

@@ -6,8 +6,9 @@ const blue = "hsla(221, 83%, 53%, 0.57)";
 const green = "hsla(142.1, 76.2% ,36.3%, 0.6)";
 const red = "hsla(0, 72.2%, 50.6%, 0.6)";
 
-const calculateJ = (j: number) => {
-  return j * width;
+const calculateJ = (i: number, j: number) => {
+  if (j < 0) return "+="+(i * width).toString();
+  else return "+="+((i - j - 1) * width).toString();
 };
 
 function insertionSort(timeline: any, array: Inumbers[], numbersRef: any) {
@@ -16,9 +17,8 @@ function insertionSort(timeline: any, array: Inumbers[], numbersRef: any) {
   timeline.set("#line2", { backgroundColor: blue });
   timeline.set("#line2", { backgroundColor: "transparent", delay: 0.5 });
   let i = 1; // Initialize the counter
-  timeline.set("#i", { x: "+=" + width, opacity: 1});
-  // timeline.set("#iArrow", {transformOrigin: "top left" , rotation: 0});
-  // timeline.set("#jArrow", { transformOrigin: "top right" , rotation: 0});
+  timeline.set("#i", { x: "+=" + width, opacity: 1 });
+  let j=0;
   while (1) {
     // Change the for loop to a while loop
     timeline.set("#line3", { backgroundColor: blue });
@@ -35,18 +35,17 @@ function insertionSort(timeline: any, array: Inumbers[], numbersRef: any) {
         delay: 0.3,
         backgroundColor: "transparent",
       });
-      let j = i - 1;
-
-      if (j !== 0)
-        timeline.to("#j", {
-          opacity: 1,
-          x: "+=" + calculateJ(i),
-          duration: 0.5,
-        });
-
+      
       timeline.set("#line5", {
         backgroundColor: blue,
       });
+      timeline.to("#j", {
+        opacity: 1,
+        x: calculateJ(i, j),
+        duration: 0.5,
+      });
+      j = i - 1;
+
       timeline.set("#j", { opacity: 1 });
       timeline.set("#line5", {
         delay: 0.5,
@@ -128,7 +127,7 @@ function insertionSort(timeline: any, array: Inumbers[], numbersRef: any) {
   }
   timeline.set("#line3", { backgroundColor: red, delay: 0.5 });
   timeline.set("#line3", { backgroundColor: "transparent", delay: 0.5 });
-  timeline.set(['#i', '#j', '#key'], { opacity: 0 });
+  timeline.set(["#i", "#j", "#key"], { opacity: 0 });
 }
 
 export default insertionSort;

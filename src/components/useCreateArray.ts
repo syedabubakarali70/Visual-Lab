@@ -15,7 +15,7 @@ const createDivWithId = (id: string, direction: string): HTMLDivElement => {
       : direction === "backward"
       ? "mb-2"
       : "flex flex-col-reverse"
-  }  opacity-1`;
+  }  opacity-0`;
 
   // Create the first child div containing the string id
   const firstChildDiv = document.createElement("div");
