@@ -1,11 +1,10 @@
 import TopicCard from "@/components/TopicCard";
 import { SortingAlgoList, DataStructureList } from "@/lib/TopicLists";
 import { Suspense } from "react";
-import Loading from "@/app/dsa/Loading";
+import Loading from "./Loading";
 
 const DSA = () => {
   return (
-    <>
     <Suspense fallback={<Loading />}>
       <section className="w-full px-3 my-4">
         <div className="text-center text-2xl my-4">Sorting Algorithms</div>
@@ -24,7 +23,6 @@ const DSA = () => {
         </div>
       </section>
       </Suspense>
-      </>
   );
 };
 
