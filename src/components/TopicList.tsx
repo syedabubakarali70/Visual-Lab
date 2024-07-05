@@ -21,8 +21,8 @@ const TopicList = ({ onSelection }: { onSelection: () => void }) => {
               progress != null
                 ? progress[algo.link]
                   ? "text-green-600"
-                  : "text-gray-700"
-                : "text-gray-700"
+                  : "text-gray-400"
+                : "text-gray-400"
             }`}
           />
         </Link>
@@ -41,8 +41,8 @@ const TopicList = ({ onSelection }: { onSelection: () => void }) => {
               progress != null
                 ? progress[algo.link]
                   ? "text-green-600"
-                  : "text-gray-700"
-                : "text-gray-700"
+                  : "text-gray-400"
+                : "text-gray-400"
             }`}
           />
         </Link>

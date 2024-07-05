@@ -84,8 +84,8 @@ const RoomListItem = ({ room }: { room: any }) => {
     }
   }
   return (
-    <Dialog>
-      <DialogTrigger key={room.id} asChild>
+    <Dialog key={room.id} open={!(room.data().public || user.uid === room.data().hostId)}>
+      <DialogTrigger asChild>
         <div
           className="block bg-secondary/50 rounded-lg p-4 my-2 w-full hover:cursor-pointer"
           onClick={enterRoom}
@@ -166,7 +166,6 @@ const RoomListItem = ({ room }: { room: any }) => {
           </div>
         </div>
       </DialogTrigger>
-      {room.data().public === false && (
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Enter Password</DialogTitle>
@@ -197,7 +196,6 @@ const RoomListItem = ({ room }: { room: any }) => {
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      )}
     </Dialog>
   );
 };

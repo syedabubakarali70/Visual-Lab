@@ -25,32 +25,45 @@ export default function CreateRoomModal() {
   const { user } = UserAuth();
   const router = useRouter();
   const [isPublic, setIsPublic] = useState(true);
-  const [roomName, setRoomName] = useState("Enter Room Name");
+  const [roomName, setRoomName] = useState("");
+  const [roomNameError, setRoomNameError] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const handleCreateRoom = async () => {
     setLoading(true);
+    if (roomName === "") {
+      setLoading(false);
+      setRoomNameError("Room Name is required");
+      return;
+    } else if (isPublic === false && password === "") {
+      setLoading(false);
+      setRoomNameError("");
+      setPasswordError("Password is required");
+      return;
+    }
+    setPasswordError("");
     const newRoomKey = push(child(ref(rdb), "rooms")).key;
     const roomData = {
       code: "",
       hostId: user.uid,
       hostName: user.displayName,
-      typing:"",
+      typing: "",
     };
 
     // First update: Create the room
     const roomUpdates: { [key: string]: any } = {};
     roomUpdates["/rooms/" + newRoomKey] = roomData;
-    const firestoreRoomData={
+    const firestoreRoomData = {
       hostId: user.uid,
       hostName: user.displayName,
       public: isPublic,
       roomName,
       createdAt: serverTimestamp(),
       codeRef: newRoomKey,
-      ...(isPublic===false && {password})
-    }
-    const RoomRef = await addDoc(collection(db, "rooms"),firestoreRoomData );
+      ...(isPublic === false && { password }),
+    };
+    const RoomRef = await addDoc(collection(db, "rooms"), firestoreRoomData);
     return update(ref(rdb), roomUpdates)
       .then(() => {
         // Second update: Add the member
@@ -58,17 +71,15 @@ export default function CreateRoomModal() {
           memberId: user.uid,
           memberName: user.displayName,
           isAdmin: true,
-          isOnline:true
+          isOnline: true,
         };
         const memberUpdates: { [key: string]: any } = {};
         memberUpdates["/rooms/" + newRoomKey + "/members/" + user.uid] =
           memberData;
         update(ref(rdb), memberUpdates)
           .then(() => {
-            console.log("Room and member added successfully");
-
-            setLoading(false);
             router.push(`/rooms/${RoomRef.id}`);
+            setLoading(false);
           })
           .catch((error) => {
             console.error("Error adding member: ", error);
@@ -81,22 +92,29 @@ export default function CreateRoomModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Create Room</Button>
+        <Button
+          variant="default"
+          onClick={() => {
+            setPasswordError("");
+            setRoomNameError("");
+            setIsPublic(true);
+          }}
+        >
+          Create Room
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create Room</DialogTitle>
-          <DialogDescription>
-            Anyone who has this link will be able to view this.
-          </DialogDescription>
         </DialogHeader>
         <div className="flex  space-x-2 gap-2 flex-col">
           <div className="flex gap-2 flex-col my-2">
-            <Label htmlFor="link">Room Name</Label>
+            <Label htmlFor="room name">Room Name</Label>
             <Input
-              id="link"
-              defaultValue="Enter Room Name"
+              id="room name"
+              placeholder="Enter Room Name"
               onChange={(e) => setRoomName(e.target.value)}
+              error={roomNameError}
             />
           </div>
           <RadioGroup
@@ -116,13 +134,14 @@ export default function CreateRoomModal() {
           </RadioGroup>
           {!isPublic && (
             <div className="flex gap-2 flex-col my-2">
-            <Label htmlFor="link">Password</Label>
-            <Input
-              id="link"
-              defaultValue="Enter Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                placeholder="Enter Password"
+                onChange={(e) => setPassword(e.target.value)}
+                error={passwordError}
+              />
+            </div>
           )}
           <Button onClick={handleCreateRoom}>
             {loading ? <Spinner /> : "Create Room"}
