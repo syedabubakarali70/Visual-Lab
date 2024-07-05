@@ -50,6 +50,8 @@ const RoomListItem = ({ room }: { room: any }) => {
   ) as [any, boolean, Error];
   const [joined, setJoined] = React.useState(0);
   const [password, setPassword] = React.useState(``);
+  const [passwordError, setPasswordError] = React.useState(``);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const router = useRouter();
   useEffect(() => {
     setJoined(0);
@@ -61,9 +63,10 @@ const RoomListItem = ({ room }: { room: any }) => {
   }, [members]);
   const checkPassword = () => {
     if (password === room.data().password) {
+      setPasswordError("");
       router.push(`/rooms/${room.id}`);
     } else {
-      console.log("password incorrect");
+      setPasswordError("password incorrect");
     }
   };
   const deleteRoom = async () => {
@@ -79,16 +82,24 @@ const RoomListItem = ({ room }: { room: any }) => {
       });
   };
   const enterRoom = () => {
-    if(room.data().public || user.uid === room.data().hostId){
-      router.push(`/rooms/${room.id}`)
-    }
-  }
+    if (room.data().public || user.uid === room.data().hostId) {
+      router.push(`/rooms/${room.id}`);
+    } else setDialogOpen(true);
+  };
   return (
-    <Dialog key={room.id} open={!(room.data().public || user.uid === room.data().hostId)}>
+    <Dialog
+      key={room.id}
+      open={dialogOpen}
+      onOpenChange={(isOpen) => setDialogOpen(isOpen)}
+    >
       <DialogTrigger asChild>
         <div
           className="block bg-secondary/50 rounded-lg p-4 my-2 w-full hover:cursor-pointer"
-          onClick={enterRoom}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            enterRoom();
+          }}
         >
           <div className="flex justify-between items-center">
             <div>
@@ -166,36 +177,37 @@ const RoomListItem = ({ room }: { room: any }) => {
           </div>
         </div>
       </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Enter Password</DialogTitle>
-            <DialogDescription></DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center space-x-2">
-            <div className="grid flex-1 gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="link"
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-              />
-            </div>
-            <Button
-              type="submit"
-              className="px-3 self-end"
-              onClick={checkPassword}
-            >
-              <span>Enter</span>
-            </Button>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Enter Password</DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center space-x-2">
+          <div className="grid flex-1 gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="link"
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              error={passwordError}
+            />
           </div>
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
+          <Button
+            type="submit"
+            className="px-3 self-end"
+            onClick={checkPassword}
+          >
+            <span>Enter</span>
+          </Button>
+        </div>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };

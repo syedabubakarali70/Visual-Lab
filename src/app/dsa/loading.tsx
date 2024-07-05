@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
-const loading = () => {
+const Loading = () => {
   return (
     <div className="gap-y-2 flex flex-col md:flex-row flex-wrap justify-between w-full">
         <Skeleton className='w-full md:w-[30%] h-40'/>
@@ -14,4 +14,4 @@ const loading = () => {
   )
 }
 
-export default loading
+export default Loading
