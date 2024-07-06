@@ -9,6 +9,9 @@ import { useTheme } from "next-themes";
 import darkTheme from "monaco-themes/themes/Blackboard.json";
 import lightTheme from "monaco-themes/themes/GitHub.json";
 import Output from "./Output";
+import { Button } from "@/components/ui/button";
+import { CopyIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner";
 
 const editorOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   fontSize: 14,
@@ -117,10 +120,35 @@ const TextEditor = () => {
     monaco.editor.setTheme(codeBlockTheme);
   }
 
+  async function copyContent() {
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  }
   return (
     <>
       <div className="w-full h-[90vh] flex flex-col md:flex-row  justify-between items-stretch box-border gap-2">
-        <div className="w-full md:w-[70%] h-[70%] md:h-auto drop-shadow-md border-background-foreground rounded-xl overflow-y-auto">
+        <div className="w-full md:w-[70%] h-[70%] md:h-auto flex flex-col border rounded-md items-stretch">
+        <div className="w-full flex justify-between items-center pl-4 border-bottom-2">
+            <span className="text-sm flex items-center">              
+                <span>Text Editor</span>
+            </span>
+            <div className="flex justify-center items-center">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  copyContent();
+                  toast("Code copied to clipboard");
+                }}
+                className="hover:bg-primary/10"
+              >
+                <CopyIcon className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
           <Editor
             width="100%"
             loading={
