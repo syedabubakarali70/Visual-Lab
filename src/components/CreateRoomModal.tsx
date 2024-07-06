@@ -106,6 +106,7 @@ export default function CreateRoomModal() {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create Room</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="flex  space-x-2 gap-2 flex-col">
           <div className="flex gap-2 flex-col my-2">

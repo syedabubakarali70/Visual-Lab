@@ -66,7 +66,7 @@ const RoomListItem = ({ room }: { room: any }) => {
       setPasswordError("");
       router.push(`/rooms/${room.id}`);
     } else {
-      setPasswordError("password incorrect");
+      setPasswordError("Incorrect password");
     }
   };
   const deleteRoom = async () => {

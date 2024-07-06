@@ -64,8 +64,9 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
   };
 
   return (
+    <>
     <div
-      className="w-[100%] bg-primary-foreground px-4 py-3 rounded-md h-[100vh] flex flex-col justify-between"
+      className="w-[100%] flex bg-primary-foreground px-4 py-3 rounded-md h-[100vh]  flex-col justify-between"
       id="animation"
     >
       <div className="text-lg py-2 border-b-4">{Animation}</div>
@@ -87,7 +88,7 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
         Swaps:<span id="swaps">{swapsandComparisons.swaps}</span>
         </div>
         </div> */}
-      <div className="flex justify-between items-end">
+      <div className="flex justify-between items-end flex-col md:flex-row">
         <NumbersInputField setNumList={setNumList} />
         <div className="flex justify-between border-2 border-primary/70 rounded-md  py-2">
           {getPseudoCode(Animation)}
@@ -101,6 +102,8 @@ const AnimationContainer = ({ Animation }: { Animation: string }) => {
         swapsandComparisons={swapsandComparisons}
       />
     </div>
+   
+    </>
   );
 };
 

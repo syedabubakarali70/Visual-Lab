@@ -49,6 +49,29 @@ const TextEditor = () => {
     // const worker = new Worker(URL.createObjectURL(blob));
     const worker = new Worker(new URL("./workerScript.ts", import.meta.url));
 
+    useEffect(() => {
+      const handleBeforeUnload = (e:any) => {
+        // Cancel the event
+        e.preventDefault();
+        // Chrome requires returnValue to be set
+        e.returnValue = '';
+  
+        // Customize the message
+        const confirmationMessage = 'Are you sure you want to leave?';
+  
+        // Display the confirmation dialog
+        e.returnValue = confirmationMessage;
+        return confirmationMessage;
+      };
+  
+      window.addEventListener('beforeunload', handleBeforeUnload);
+  
+      // Clean up the event listener when the component unmounts
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }, []);
+
     worker.onmessage = function (e) {
       if (e.data.type === "result") {
         console.log("onmessage result: ", e.data.data);

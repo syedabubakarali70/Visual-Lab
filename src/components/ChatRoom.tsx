@@ -103,7 +103,7 @@ const ChatRoom = ({ roomId, open, disabled }: { roomId: string; open: boolean; d
     orderBy("createdAt", "desc")
   );
   const [messages, loading, error] = useCollection(q);
-  const [sendMessage, setSendMessage] = useState("Enter message");
+  const [sendMessage, setSendMessage] = useState("");
 
   const handleSendMessage = async () => {
     if (sendMessage.trim() === "") return;
@@ -114,7 +114,7 @@ const ChatRoom = ({ roomId, open, disabled }: { roomId: string; open: boolean; d
       createdAt: serverTimestamp(),
       sender: user.displayName,
     });
-    setSendMessage("Enter message");
+    setSendMessage("");
     dummy.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -144,7 +144,7 @@ const ChatRoom = ({ roomId, open, disabled }: { roomId: string; open: boolean; d
           <Input
             type="text"
             ref={inputRef}
-            placeholder={sendMessage}
+            placeholder="Enter Message"
             disabled={disabled}
             onChange={(e) => setSendMessage(e.target.value)}
             onKeyDown={(e) => {

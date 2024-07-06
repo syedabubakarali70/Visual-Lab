@@ -1,81 +1,54 @@
 const MergeSortPseudoCode = () => {
-    return (
-      <div>
-        <div className="line pl-4" id="line1">
-          {"function mergeSort(array):"}
-        </div>
-        <div className="line pl-8" id="line2">
-          {"if length of array > 1:"}
-        </div>
-        <div className="line pl-12" id="line3">
-          {"mid = length of array // 2"}
-        </div>
-        <div className="line pl-12" id="line4">
-          {"leftHalf = array[0:mid]"}
-        </div>
-        <div className="line pl-12" id="line5">
-          {"rightHalf = array[mid:]"}
-        </div>
-        <div className="line pl-12" id="line6">
-          {"mergeSort(leftHalf)"}
-        </div>
-        <div className="line pl-12" id="line7">
-          {"mergeSort(rightHalf)"}
-        </div>
-        <div className="line pl-12" id="line8">
-          {"i = j = k = 0"}
-        </div>
-        <div className="line pl-12" id="line9">
-          {"while i < length of leftHalf and j < length of rightHalf:"}
-        </div>
-        <div className="line pl-16" id="line10">
-          {"if leftHalf[i] < rightHalf[j]:"}
-        </div>
-        <div className="line pl-20" id="line11">
-          {"array[k] = leftHalf[i]"}
-        </div>
-        <div className="line pl-20" id="line12">
-          {"i = i + 1"}
-        </div>
-        <div className="line pl-16" id="line13">
-          {"else:"}
-        </div>
-        <div className="line pl-20" id="line14">
-          {"array[k] = rightHalf[j]"}
-        </div>
-        <div className="line pl-20" id="line15">
-          {"j = j + 1"}
-        </div>
-        <div className="line pl-16" id="line16">
-          {"k = k + 1"}
-        </div>
-        <div className="line pl-12" id="line17">
-          {"while i < length of leftHalf:"}
-        </div>
-        <div className="line pl-16" id="line18">
-          {"array[k] = leftHalf[i]"}
-        </div>
-        <div className="line pl-16" id="line19">
-          {"i = i + 1"}
-        </div>
-        <div className="line pl-16" id="line20">
-          {"k = k + 1"}
-        </div>
-        <div className="line pl-12" id="line21">
-          {"while j < length of rightHalf:"}
-        </div>
-        <div className="line pl-16" id="line22">
-          {"array[k] = rightHalf[j]"}
-        </div>
-        <div className="line pl-16" id="line23">
-          {"j = j + 1"}
-        </div>
-        <div className="line pl-16" id="line24">
-          {"k = k + 1"}
-        </div>
+  return (
+    <div id="codeLines">
+      <div id="line1" className="line pl-4">
+        {"function mergeSort(array):"}
       </div>
-    );
-  };
-  
-  export default MergeSortPseudoCode;
-  
+      <div className="pl-8 line" id="line2">
+        {"if length of array > 1:"}
+      </div>
+      <div className="pl-12 line" id="line3">
+        {"mid = length of array // 2"}
+      </div>
+      <div className="pl-12 line" id="line4">
+        {"left = array[0:mid]"}
+      </div>
+      <div className="pl-12 line" id="line5">
+        {"right = array[mid:length of array]"}
+      </div>
+      <div className="pl-12 line" id="line6">
+        {"mergeSort(left)"}
+      </div>
+      <div className="pl-12 line" id="line7">
+        {"mergeSort(right)"}
+      </div>
+      <div className="pl-12 line" id="line8">
+        {"merge(left, right, array)"}
+      </div>
+
+      <div id="line9" className="line pl-4">
+        {"function merge(left, right, array):"}
+      </div>
+      <div className="pl-8 line" id="line10">
+        {"i = j = k = 0"}
+      </div>
+      <div className="pl-8 line" id="line11">
+        {"while i < length(left) and j < length(right):"}
+      </div>
+      <div className="pl-12 line" id="line12">
+        {"if left[i] < right[j]: array[k++] = left[i++]"}
+      </div>
+      <div className="pl-12 line" id="line13">
+        {"else: array[k++] = right[j++]"}
+      </div>
+      <div className="pl-8 line" id="line14">
+        {"while i < length(left): array[k++] = left[i++]"}
+      </div>
+      <div className="pl-8 line" id="line15">
+        {"while j < length(right): array[k++] = right[j++]"}
+      </div>
+    </div>
+  );
+};
+
+export default MergeSortPseudoCode;

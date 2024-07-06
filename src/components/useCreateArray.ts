@@ -19,8 +19,9 @@ const createDivWithId = (id: string, direction: string): HTMLDivElement => {
 
   // Create the first child div containing the string id
   const firstChildDiv = document.createElement("div");
-  firstChildDiv.className =
-    `text-primary-foreground text-lg font-semibold  p-1 bg-primary  items-center justify-center flex m-1 ${(id === 'I' || id === 'J') ? "w-6 h-6 rounded-full" : "rounded-lg"}`;
+  firstChildDiv.className = `text-primary-foreground text-lg font-semibold  p-1 bg-primary  items-center justify-center flex m-1 ${
+    id === "I" || id === "J" ? "w-6 h-6 rounded-full" : "rounded-lg"
+  }`;
   firstChildDiv.textContent = id;
 
   // Create the second child div containing the down arrow
@@ -87,8 +88,7 @@ const useCreateArray = (
         variables.appendChild(j);
         if (Animation === "Insertion Sort") {
           otherVariables && otherVariables.appendChild(key);
-        }
-        else if(Animation === "Selection Sort"){
+        } else if (Animation === "Selection Sort") {
           otherVariables && otherVariables.appendChild(min);
         }
       }
@@ -163,9 +163,15 @@ const useCreateArray = (
         variables && variables.removeChild(j);
         if (Animation === "Insertion Sort") {
           otherVariables && otherVariables.removeChild(key);
-        }
-        else if(Animation === "Selection Sort"){
+        } else if (Animation === "Selection Sort") {
           otherVariables && otherVariables.removeChild(min);
+        }
+        const codeLinesDiv = document.getElementById("codeLines");
+        if (codeLinesDiv) {
+          const childDivs = codeLinesDiv.querySelectorAll("div");
+          childDivs.forEach((div) => {
+            div.style.backgroundColor = "transparent";
+          });
         }
       }
     };
