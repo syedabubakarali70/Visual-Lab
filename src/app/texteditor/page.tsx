@@ -47,12 +47,32 @@ const TextEditor = () => {
   const [value, setValue] = useState("");
   const [output, setOutput] = useState<string>("");
 
-  const executeCodeInWorker = (code: string) => {
-    // const blob = new Blob([workerScript], { type: "application/javascript" });
-    // const worker = new Worker(URL.createObjectURL(blob));
-    const worker = new Worker(new URL("./workerScript.ts", import.meta.url));
+  // const executeCodeInWorker = (code: string) => {
+  //   // const blob = new Blob([workerScript], { type: "application/javascript" });
+  //   // const worker = new Worker(URL.createObjectURL(blob));
+  //   const worker = new Worker(new URL("./workerScript.ts", import.meta.url));
 
-    useEffect(() => {
+    
+
+  //   worker.onmessage = function (e) {
+  //     if (e.data.type === "result") {
+  //       console.log("onmessage result: ", e.data.data);
+  //       setOutput(e.data.data);
+  //     } else if (e.data.type === "error") {
+  //       setOutput(`Error: ${e.data.data}`);
+  //     }
+  //     worker.terminate();
+  //   };
+
+  //   worker.onerror = function (e) {
+  //     setOutput(`Worker error: ${e.message}`);
+  //     worker.terminate();
+  //   };
+
+  //   worker.postMessage(code);
+  //   console.log("code : ", code);
+  // };
+  useEffect(() => {
       const handleBeforeUnload = (e:any) => {
         // Cancel the event
         e.preventDefault();
@@ -74,25 +94,6 @@ const TextEditor = () => {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       };
     }, []);
-
-    worker.onmessage = function (e) {
-      if (e.data.type === "result") {
-        console.log("onmessage result: ", e.data.data);
-        setOutput(e.data.data);
-      } else if (e.data.type === "error") {
-        setOutput(`Error: ${e.data.data}`);
-      }
-      worker.terminate();
-    };
-
-    worker.onerror = function (e) {
-      setOutput(`Worker error: ${e.message}`);
-      worker.terminate();
-    };
-
-    worker.postMessage(code);
-    console.log("code : ", code);
-  };
 
   let codeBlockTheme = theme === "dark" ? "darkTheme" : "lightTheme";
   const monaco = useMonaco();
